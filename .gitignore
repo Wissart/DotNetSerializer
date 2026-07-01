@@ -1,0 +1,12 @@
+# NuGet packages
+packages/
+
+# Test results
+TestResults/
+
+# Build results
+bin/
+obj/
+
+# IDE workspace settings
+.vs/

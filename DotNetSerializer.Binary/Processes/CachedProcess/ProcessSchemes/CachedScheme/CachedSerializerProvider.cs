@@ -1,0 +1,242 @@
+﻿using DotNetSerializer.Base;
+using DotNetSerializer.Base.Attributes;
+using DotNetSerializer.Base.Exceptions;
+using DotNetSerializer.Base.Utilities;
+using DotNetSerializer.Binary.Converters;
+using DotNetSerializer.Binary.Converters.Default;
+using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Serializers;
+using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Serializers.CollectionSerializers;
+using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Serializers.TypeSerializers;
+using System;
+using System.Reflection;
+
+namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme
+{
+    internal class CachedSerializerProvider : ISerializerProvider<CachedProcessScheme>, ISchemeMaker
+    {
+        private readonly BinaryOptions _options;
+        public SchemeStorage<CachedProcessScheme> Schemes { get; }
+
+        public CachedSerializerProvider(BinaryOptions options)
+        {
+            _options = options;
+            Schemes = new SchemeStorage<CachedProcessScheme>(options, this);
+        }
+
+        public CollectionSerializer GetCollectionSerializer(Type declareCollectionType, Type[] elementTypes)
+        {
+            return CreateCollectionSerializer(declareCollectionType, elementTypes);
+        }
+
+        private PrefixSerializer CreateCollectionSerializer(Type declareCollectionType, Type[] elementTypes)
+        {
+            var collectionType = CollectionUtilities.GetCollectionType(declareCollectionType);
+
+            var handler = _options.CollectionHandlers.Get(collectionType);
+            var rank = handler.GetRank(declareCollectionType);
+            var elementType = handler.GetElementType(elementTypes);
+            var elementSerializer = CreateElementSerializer(elementType);
+
+            return CreatePrefixSerializer(null, handler, rank, elementTypes, elementSerializer);
+        }
+
+        private IElementSerializer CreateElementSerializer(Type valueType)
+        {
+            if (CollectionUtilities.TryGetElementTypes(valueType, out Type[] elementTypes))
+            {
+                return CreateCollectionSerializer(valueType, elementTypes);
+            }
+            else
+            {
+                return CreateTypeSerializer(null, valueType, valueType);
+            }
+        }
+
+
+
+        public PropertySerializer GetSerializerByProperty(PropertyInfo property, BinaryContext context = null)
+        {
+            if (CollectionUtilities.TryGetElementTypes(property.PropertyType, out Type[] elementTypes))
+            {
+                return CreateCollectionSerializerByProperty(property, property.PropertyType, elementTypes);
+            }
+            else
+            {
+                return CreateTypeSerializer(property, property.PropertyType);
+            }
+        }
+
+        public CollectionSerializer GetCollectionSerializerByProperty(Type[] elementTypes, BinaryContext context)
+        {
+            var property = context.ObjectContext.Property;
+            var declareCollectionType = property.PropertyType;
+
+            return CreateCollectionSerializerByProperty(property, declareCollectionType, elementTypes);
+        }
+
+        private CollectionSerializer CreateCollectionSerializerByProperty(PropertyInfo property, Type declareCollectionType, Type[] elementTypes)
+        {
+            var attribute = AttributeUtilities.GetCollectionAttribute(property);
+            if (attribute == null)
+                attribute = _options.DefaultAttributes.Get<CollectionAttribute>();
+
+            var sizeType = attribute.SizeType;
+
+            var collectionType = CollectionUtilities.GetCollectionType(declareCollectionType);
+
+            var handler = _options.CollectionHandlers.Get(collectionType);
+            var rank = handler.GetRank(declareCollectionType);
+            var elementType = handler.GetElementType(elementTypes);
+            var elementSerializer = CreateElementSerializer(property, elementType);
+
+            if (sizeType == CollectionSizeType.Fixed)
+            {
+                var shape = attribute.Shape;
+                return CreateFixedSerializer(property, handler, rank, shape, elementTypes, elementSerializer);
+            }
+            else
+                return CreatePrefixSerializer(property, handler, rank, elementTypes, elementSerializer);
+        }
+
+        public IElementSerializer CreateElementSerializer(PropertyInfo property, Type valueType)
+        {
+            if (CollectionUtilities.TryGetElementTypes(valueType, out Type[] elementTypes))
+            {
+                return CreateNestedSerializer(property, valueType, elementTypes);
+            }
+            else
+            {
+                return CreateTypeSerializer(property, valueType);
+            }
+        }
+
+        private IElementSerializer CreateNestedSerializer(PropertyInfo property, Type declareCollectionType, Type[] elementTypes)
+        {
+            var collectionType = CollectionUtilities.GetCollectionType(declareCollectionType);
+
+            var handler = _options.CollectionHandlers.Get(collectionType);
+            var rank = handler.GetRank(declareCollectionType);
+            var elementType = handler.GetElementType(elementTypes);
+            var elementSerializer = CreateElementSerializer(property, elementType);
+
+            return CreatePrefixSerializer(property, handler, rank, elementTypes, elementSerializer);
+        }
+
+        public TypeSerializer CreateTypeSerializer(PropertyInfo property, Type valueType)
+        {
+            Type converterType = valueType;
+            var converterAttribute = AttributeUtilities.GetConverterAttribute(property);
+            if (converterAttribute != null)
+            {
+                converterType = converterAttribute.ConverterType;
+                if (!_options.Converters.Contains(converterType))
+                    throw new ConverterNotFoundException(converterType);
+            }
+
+            return CreateTypeSerializer(property, valueType, converterType);
+        }
+
+        public FixedSerializer CreateFixedSerializer(PropertyInfo property,
+            CollectionHandler handler,
+            int rank,
+            int[] shape,
+            Type[] elementTypes,
+            IElementSerializer elementSerializer)
+        {
+            switch (rank)
+            {
+                case 1:
+                    return new Fixed1DSerializer(property, handler, elementTypes, elementSerializer, shape);
+                case 2:
+                    return new Fixed2DSerializer(property, handler, elementTypes, elementSerializer, shape);
+                case 3:
+                    return new Fixed3DSerializer(property, handler, elementTypes, elementSerializer, shape);
+                default:
+                    throw new DotNetSerializerException($"Unsupported collection rank: {shape.Length}");
+            }
+        }
+
+        public PrefixSerializer CreatePrefixSerializer(PropertyInfo property,
+            CollectionHandler handler,
+            int rank,
+            Type[] elementTypes,
+            IElementSerializer elementSerializer)
+        {
+            switch (rank)
+            {
+                case 1:
+                    return new Prefix1DSerializer(property, handler, elementTypes, elementSerializer);
+                case 2:
+                    return new Prefix2DSerializer(property, handler, elementTypes, elementSerializer);
+                case 3:
+                    return new Prefix3DSerializer(property, handler, elementTypes, elementSerializer);
+                default:
+                    throw new DotNetSerializerException($"Unsupported collection rank: {rank}");
+            }
+        }
+
+        private TypeSerializer CreateTypeSerializer(PropertyInfo property, Type valueType, Type converterType)
+        {
+            if (SerializationUtilities.IsClass(valueType))
+            {
+                var scheme = Schemes.Get(valueType);
+
+                if (_options.TypeInfoStorage.Get(valueType).IsVersionable)
+                {
+                    if (_options.Converters.Items.TryGetValue(converterType, out BinaryConverter converter))
+                        return new CachedVersionableSerializerWithConverter(property, scheme, converter);
+                    else
+                        return new CachedVersionableSerializer(property, scheme);
+                }
+                else
+                {
+                    if (_options.Converters.Items.TryGetValue(converterType, out BinaryConverter converter))
+                        return new CachedClassSerializerWithConverter(property, scheme, converter);
+                    else
+                        return new CachedClassSerializer(property, scheme);
+                }
+            }
+            else
+            {
+                var converter = _options.Converters.Get(converterType);
+                return CreateNonClassSerializer(property, converter);
+            }
+        }
+
+        private TypeSerializer CreateNonClassSerializer(PropertyInfo property, BinaryConverter converter)
+        {
+            if (converter.RegisteredType == typeof(string))
+            {
+                StringFormatAttribute attriute;
+                if (property == null)
+                    attriute = _options.DefaultAttributes.Get<StringFormatAttribute>();
+                else
+                {
+                    attriute = AttributeUtilities.GetStringFormatAttribute(property);
+                    if (attriute == null)
+                        attriute = _options.DefaultAttributes.Get<StringFormatAttribute>();
+                }
+                    
+
+                return CreateStringSerializer(property, (StringConverter)converter, attriute);
+            }
+            else
+                return new CachedNonClassSerializer(property, converter);
+        }
+
+        private StringSerializer CreateStringSerializer(PropertyInfo property, StringConverter converter, StringFormatAttribute attribute)
+        {
+            switch (attribute.SizeType)
+            {
+                case StringSizeType.Fixed:
+                    return new CachedFixedStringSerializer(property, converter, attribute.EncodingName, attribute.Size);
+                case StringSizeType.Prefix:
+                    return new CachedPrefixStringSerializer(property, converter, attribute.EncodingName);
+                case StringSizeType.SignEnd:
+                    return new CachedSignEndStringSerializer(property, converter, attribute.EncodingName);
+                default:
+                    throw new DotNetSerializerException($"Unknown string size type: {attribute.SizeType}");
+            }
+        }
+    }
+}

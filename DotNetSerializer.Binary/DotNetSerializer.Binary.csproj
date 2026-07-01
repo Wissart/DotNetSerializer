@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8315890C-615B-4AC5-BF98-6284FD2163C4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotNetSerializer.Binary</RootNamespace>
+    <AssemblyName>DotNetSerializer.Binary</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Storages\BinaryConverterStorage.cs" />
+    <Compile Include="BinaryContext.cs" />
+    <Compile Include="Processes\CachedProcess\CachedProcessProvider.cs" />
+    <Compile Include="Processes\CachedProcess\CachedSerializationProcess.cs" />
+    <Compile Include="Processes\DefaultProcess\DefaultDeserializationProcess.cs" />
+    <Compile Include="Processes\DefaultProcess\DefaultProcessProvider.cs" />
+    <Compile Include="Processes\DefaultProcess\DefaultSerializationProcess.cs" />
+    <Compile Include="Processes\CachedProcess\Parallel\ParallelDeserializationProcess.cs" />
+    <Compile Include="Processes\CachedProcess\CachedDeserializationProcess.cs" />
+    <Compile Include="Processes\DeserializationProcessBase.cs" />
+    <Compile Include="Processes\CachedProcess\Parallel\ParallelSerializationProcess.cs" />
+    <Compile Include="Processes\ProcessBase.cs" />
+    <Compile Include="Processes\ProcessProvider.cs" />
+    <Compile Include="Processes\SerializationProcessBase.cs" />
+    <Compile Include="Converters\Default\CharConverter.cs" />
+    <Compile Include="Converters\Default\DecimalConverter.cs" />
+    <Compile Include="Converters\Default\DoubleConverter.cs" />
+    <Compile Include="Converters\Default\Int64Converter.cs" />
+    <Compile Include="Converters\Default\SByteConverter.cs" />
+    <Compile Include="Converters\Default\UInt16Converter.cs" />
+    <Compile Include="Converters\Default\UInt64Converter.cs" />
+    <Compile Include="Converters\FactoryConverter.cs" />
+    <Compile Include="Converters\VersionableConverter.cs" />
+    <Compile Include="BinaryOptions.cs" />
+    <Compile Include="Converters\BinaryConverter.cs" />
+    <Compile Include="Converters\InAttributeConverter.cs" />
+    <Compile Include="Converters\Default\BoolConverter.cs" />
+    <Compile Include="Converters\Default\ByteConverter.cs" />
+    <Compile Include="Converters\Default\Int16Converter.cs" />
+    <Compile Include="Converters\Default\Int32Converter.cs" />
+    <Compile Include="Converters\Default\SingleConverter.cs" />
+    <Compile Include="Converters\Default\StringConverter.cs" />
+    <Compile Include="Converters\Default\UInt32Converter.cs" />
+    <Compile Include="Converters\LambdaConverter.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\CachedProcessScheme.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\CachedSerializerProvider.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\ParallelProcessScheme.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\ParallelSerializerProvider.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\ParallelSchemeStorage.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Fixed1DParallelSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Fixed2DParallelSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Fixed3DParallelSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\FixedParallelSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Prefix1DParallelSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Prefix2DParallelSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Prefix3DParallelSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\PrefixParallelSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\TypeSerializers\ClassParallelSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\TypeSerializers\ClassParallelSerializerWithConverter.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Fixed1DSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Fixed2DSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Fixed3DSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\FixedSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Prefix1DSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Prefix2DSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Prefix3DSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\PrefixSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\ContainerSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\IElementSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\PropertySerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\StringSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\TypeSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\TypeSerializers\CachedClassSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\TypeSerializers\CachedClassSerializerWithConverter.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\TypeSerializers\CachedFixedStringSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\TypeSerializers\CachedNonClassSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\TypeSerializers\CachedPrefixStringSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\TypeSerializers\CachedSignEndStringSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\TypeSerializers\CachedVersionableSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\TypeSerializers\CachedVersionableSerializerWithConverter.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\IProcessScheme.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\ISchemeMaker.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\ISerializerProvider.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\SchemeStorage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BinarySerializer.cs" />
+    <Compile Include="Processes\Common\Base\ClassSerializer.cs" />
+    <Compile Include="Processes\Common\Base\NonClassSerializer.cs" />
+    <Compile Include="Processes\Common\Base\VersionableSerializer.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Utilities\ProcessPool\ParallelProcess.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Utilities\ProcessPool\ParallelProcessPool.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Utilities\ProcessPool\Worker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetSerializer.Base\DotNetSerializer.Base.csproj">
+      <Project>{a113e8f7-aa8d-4776-b099-5d7fa765e84d}</Project>
+      <Name>DotNetSerializer.Base</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

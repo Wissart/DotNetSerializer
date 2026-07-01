@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A113E8F7-AA8D-4776-B099-5D7FA765E84D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotNetSerializer.Base</RootNamespace>
+    <AssemblyName>DotNetSerializer.Base</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\CollectionAttribute.cs" />
+    <Compile Include="Attributes\ConverterAttribute.cs" />
+    <Compile Include="Attributes\DotNetSerializerAttribute.cs" />
+    <Compile Include="Attributes\RequireVersionAttribute.cs" />
+    <Compile Include="Attributes\StringFormatAttribute.cs" />
+    <Compile Include="Attributes\VersionableAttribute.cs" />
+    <Compile Include="CollectionHandlers\ArrayHandler.cs" />
+    <Compile Include="CollectionHandlers\ListHandler.cs" />
+    <Compile Include="Infrastructure\DisposableScope.cs" />
+    <Compile Include="Exceptions\AttributeException.cs" />
+    <Compile Include="Exceptions\AttributeNotFoundException.cs" />
+    <Compile Include="Exceptions\CollectionHandlerNotFoundException.cs" />
+    <Compile Include="Exceptions\ConverterNotFoundException.cs" />
+    <Compile Include="Exceptions\DeserializationException.cs" />
+    <Compile Include="Exceptions\DotNetSerializerException.cs" />
+    <Compile Include="Exceptions\ContextableException.cs" />
+    <Compile Include="Exceptions\SerializationException.cs" />
+    <Compile Include="Exceptions\StreamEndNotReachedException.cs" />
+    <Compile Include="Exceptions\TransientValueNotFoundException.cs" />
+    <Compile Include="CollectionHandler.cs" />
+    <Compile Include="Exceptions\UnsupportedVersionException.cs" />
+    <Compile Include="Exceptions\VersionPropertyNotFoundException.cs" />
+    <Compile Include="Processes\IDeserializationProcess.cs" />
+    <Compile Include="Processes\ISerializationProcess.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\SerializableTypeInfo.cs" />
+    <Compile Include="SerializationContext.cs" />
+    <Compile Include="Serializer.cs" />
+    <Compile Include="SerializerOptions.cs" />
+    <Compile Include="Storages\CollectionHandlerStorage.cs" />
+    <Compile Include="Storages\DefaultAttributeStorage.cs" />
+    <Compile Include="Storages\DictionaryWrapper.cs" />
+    <Compile Include="Storages\TypeInfoStorage.cs" />
+    <Compile Include="Utilities\AttributeUtilities.cs" />
+    <Compile Include="Utilities\CollectionUtilities.cs" />
+    <Compile Include="Utilities\SerializationUtilities.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
