@@ -53,18 +53,11 @@ namespace DotNetSerializer.Base.Storages
         }
 
         /// <summary>
-        /// Creates and sets a default attribute instance with constructor arguments.
+        /// Sets the specified attrbiute as the default.
         /// </summary>
-        /// <typeparam name="T">Attribute type derived from <see cref="DotNetSerializerAttribute"/>.</typeparam>
-        /// <param name="args">Constructor arguments for the attribute.</param>
-        public void Set<T>(params object[] args) 
-            where T : DotNetSerializerAttribute
-        {
-            var attribute = (T)Activator.CreateInstance(typeof(T), args);
-            SetAttribute(attribute);
-        }
-
-        private void SetAttribute(DotNetSerializerAttribute attribute)
+        /// <param name="attribute">The attribute that is set as the default.</param>
+        /// <exception cref="DotNetSerializerException">Thrown when the attribute is not of allowed type or is not derived from an allowed type.</exception>
+        public void Set(DotNetSerializerAttribute attribute)
         {
             Type attributeType = attribute.GetType();
             Type rootAttributeType = attributeType;

@@ -40,7 +40,7 @@ namespace DotNetSerializer.Base.Tests.Unit.Storages
         }
 
         [TestMethod]
-        public void Get_NotSupportAttribute_ShouldThrowDotNetSerializerException()
+        public void Get_NotAllowedAttribute_ShouldThrowDotNetSerializerException()
         {
             var storage = new DefaultAttributeStorage();
 
@@ -49,11 +49,11 @@ namespace DotNetSerializer.Base.Tests.Unit.Storages
         }
 
         [TestMethod]
-        public void Set_Generic_CustomStringFormatAttribute_ShouldSetLikeStringFormatAttribute()
+        public void Set_StringFormatAttribute_ShouldSetLikeDefaultStringFormatAttribute()
         {
             var storage = new DefaultAttributeStorage();
 
-            storage.Set<CustomStringFormatAttribute>();
+            storage.Set(new StringFormatAttribute("ASCII", StringSizeType.Fixed, 32));
             var attribute = storage.Get<StringFormatAttribute>();
 
 
@@ -64,12 +64,12 @@ namespace DotNetSerializer.Base.Tests.Unit.Storages
         }
 
         [TestMethod]
-        public void Set_Generic_NotSupportAttribute_ShouldThrowDotNetSerializerException()
+        public void Set_Generic_NotAllowedAttribute_ShouldThrowDotNetSerializerException()
         {
             var storage = new DefaultAttributeStorage();
 
             Assert.ThrowsException<DotNetSerializerException>(
-                () => storage.Set<ConverterAttribute>(typeof(int)));
+                () => storage.Set(new ConverterAttribute(typeof(int))));
         }
     }
 }
