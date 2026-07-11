@@ -1,4 +1,4 @@
-﻿using DotNetSerializer.Base;
+﻿using DotNetSerializer.Base.CollectionHandlers;
 using System;
 using System.IO;
 using System.Reflection;
@@ -9,7 +9,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
     {
         protected override int Rank => 1;
 
-        public Prefix1DSerializer(PropertyInfo property, CollectionHandler collectionHandler, Type[] elementTypes, IElementSerializer elementSerializer)
+        public Prefix1DSerializer(PropertyInfo property, ICollectionHandler collectionHandler, Type[] elementTypes, IElementSerializer elementSerializer)
             : base(property, collectionHandler, elementTypes, elementSerializer)
         {
         }

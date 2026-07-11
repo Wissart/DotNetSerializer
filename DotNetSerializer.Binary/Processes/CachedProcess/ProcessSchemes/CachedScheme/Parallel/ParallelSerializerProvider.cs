@@ -1,5 +1,6 @@
 ﻿using DotNetSerializer.Base;
 using DotNetSerializer.Base.Attributes;
+using DotNetSerializer.Base.CollectionHandlers;
 using DotNetSerializer.Base.Exceptions;
 using DotNetSerializer.Base.Utilities;
 using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Parallel.Serializers.CollectionSerializers;
@@ -93,7 +94,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         }
 
         private FixedParallelSerializer CreateFixedParallelSerializer(PropertyInfo property,
-            CollectionHandler handler,
+            ICollectionHandler handler,
             int rank,
             int[] shape,
             Type[] elementTypes,
@@ -114,7 +115,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         }
 
         private PrefixParallelSerializer CreatePrefixParallelSerializer(PropertyInfo property,
-            CollectionHandler handler,
+            ICollectionHandler handler,
             int rank,
             Type[] elementTypes,
             IElementSerializer elementSerializer,

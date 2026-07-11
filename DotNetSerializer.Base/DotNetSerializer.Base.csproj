@@ -61,7 +61,7 @@
     <Compile Include="Exceptions\SerializationException.cs" />
     <Compile Include="Exceptions\StreamEndNotReachedException.cs" />
     <Compile Include="Exceptions\TransientValueNotFoundException.cs" />
-    <Compile Include="CollectionHandler.cs" />
+    <Compile Include="CollectionHandlers\ICollectionHandler.cs" />
     <Compile Include="Exceptions\UnsupportedVersionException.cs" />
     <Compile Include="Exceptions\VersionPropertyNotFoundException.cs" />
     <Compile Include="Processes\IDeserializationProcess.cs" />

@@ -1,3 +1,8 @@
+*.user
+*.userosscache
+*.suo
+*.cache
+
 # NuGet packages
 packages/
 

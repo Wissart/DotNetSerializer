@@ -1,5 +1,5 @@
-﻿using DotNetSerializer.Base;
-using DotNetSerializer.Base.Attributes;
+﻿using DotNetSerializer.Base.Attributes;
+using DotNetSerializer.Base.CollectionHandlers;
 using DotNetSerializer.Base.Exceptions;
 using DotNetSerializer.Base.Utilities;
 using DotNetSerializer.Binary.Converters;
@@ -69,7 +69,7 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
             return collection;
         }
 
-        private void DeserializeCollection(BinaryReader reader, CollectionHandler handler, object collection, int[] shape, Type itemType, BinaryContext context)
+        private void DeserializeCollection(BinaryReader reader, ICollectionHandler handler, object collection, int[] shape, Type itemType, BinaryContext context)
         {
             var deserializeItemMethod = CreateCollectionItemDeserializationMethod(itemType);
 
@@ -150,7 +150,7 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
             }
         }
 
-        private void Deserialize1DCollection(BinaryReader reader, CollectionHandler handler, object collection, int[] shape, Func<BinaryReader, BinaryContext, object> method, BinaryContext context)
+        private void Deserialize1DCollection(BinaryReader reader, ICollectionHandler handler, object collection, int[] shape, Func<BinaryReader, BinaryContext, object> method, BinaryContext context)
         {
             for (int i = 0; i < shape[0]; i++)
             {
@@ -159,7 +159,7 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
             }
         }
 
-        private void Deserialize2DCollection(BinaryReader reader, CollectionHandler handler, object collection, int[] shape, Func<BinaryReader, BinaryContext, object> method, BinaryContext context)
+        private void Deserialize2DCollection(BinaryReader reader, ICollectionHandler handler, object collection, int[] shape, Func<BinaryReader, BinaryContext, object> method, BinaryContext context)
         {
             for (int i = 0; i < shape[0]; i++)
             {
@@ -171,7 +171,7 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
             }
         }
 
-        private void Deserialize3DCollection(BinaryReader reader, CollectionHandler handler, object collection, int[] shape, Func<BinaryReader, BinaryContext, object> method, BinaryContext context)
+        private void Deserialize3DCollection(BinaryReader reader, ICollectionHandler handler, object collection, int[] shape, Func<BinaryReader, BinaryContext, object> method, BinaryContext context)
         {
             for (int i = 0; i < shape[0]; i++)
             {

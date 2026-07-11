@@ -1,4 +1,4 @@
-﻿using DotNetSerializer.Base;
+﻿using DotNetSerializer.Base.CollectionHandlers;
 using DotNetSerializer.Base.Infrastructure;
 using System;
 using System.Collections;
@@ -9,13 +9,13 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 {
     internal abstract class CollectionSerializer : PropertySerializer
     {
-        protected CollectionHandler _collectionHandler;
+        protected ICollectionHandler _collectionHandler;
         protected IElementSerializer _elementSerializer;
         protected Type[] _elementTypes;
 
         protected abstract int Rank { get; }
 
-        public CollectionSerializer(PropertyInfo property, CollectionHandler collectionHandler, Type[] elementTypes, IElementSerializer elementSerializer) : base(property)
+        public CollectionSerializer(PropertyInfo property, ICollectionHandler collectionHandler, Type[] elementTypes, IElementSerializer elementSerializer) : base(property)
         {
             _collectionHandler = collectionHandler;
             _elementTypes = elementTypes;

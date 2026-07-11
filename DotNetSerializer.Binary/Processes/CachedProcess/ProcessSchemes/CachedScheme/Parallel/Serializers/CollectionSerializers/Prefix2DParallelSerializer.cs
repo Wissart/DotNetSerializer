@@ -1,4 +1,4 @@
-﻿using DotNetSerializer.Base;
+﻿using DotNetSerializer.Base.CollectionHandlers;
 using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Parallel.Utilities.ProcessPool;
 using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Serializers;
 using System;
@@ -12,7 +12,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         protected override int Rank => 2;
 
         public Prefix2DParallelSerializer(PropertyInfo property,
-            CollectionHandler collectionHandler,
+            ICollectionHandler collectionHandler,
             Type[] elementTypes,
             IElementSerializer elementSerializer,
             int elementSize)

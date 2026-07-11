@@ -11,7 +11,6 @@ namespace DotNetSerializer.Base.Attributes
     [AttributeUsage(AttributeTargets.Class)]
     public class VersionableAttribute : DotNetSerializerAttribute
     {
-
         private readonly uint? _maxVersion;
         private readonly HashSet<uint> _exactVersions;
         private readonly HashSet<uint> _excludedVersions;

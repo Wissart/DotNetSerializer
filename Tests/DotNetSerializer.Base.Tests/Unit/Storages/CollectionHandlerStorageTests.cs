@@ -1,4 +1,5 @@
-﻿using DotNetSerializer.Base.Exceptions;
+﻿using DotNetSerializer.Base.CollectionHandlers;
+using DotNetSerializer.Base.Exceptions;
 using DotNetSerializer.Base.Storages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -8,46 +9,46 @@ namespace DotNetSerializer.Base.Tests.Unit.Storages
     [TestClass]
     public class CollectionHandlerStorageTests
     {
-        private class NewCollectionHandler : CollectionHandler
+        private class NewCollectionHandler : ICollectionHandler
         {
-            public override Type CollectionType => GetType();
+            public Type CollectionType => GetType();
 
-            public override void AddItem(object collection, object item, params int[] indices)
+            public void AddItem(object collection, object item, params int[] indices)
             {
                 throw new NotImplementedException();
             }
 
-            public override object CreateCollection(Type[] elementTypes, int[] sizes)
+            public object CreateCollection(Type[] elementTypes, int[] sizes)
             {
                 throw new NotImplementedException();
             }
 
-            public override object CreateCollectionWithItems(Type[] elementTypes, object[] items)
+            public object CreateCollectionWithItems(Type[] elementTypes, object[] items)
             {
                 throw new NotImplementedException();
             }
 
-            public override object CreateCollectionWithItems(Type[] elementTypes, object items, int[] sizes)
+            public object CreateCollectionWithItems(Type[] elementTypes, object items, int[] sizes)
             {
                 throw new NotImplementedException();
             }
 
-            public override int[] GetCapacity(object collection)
+            public int[] GetCapacity(object collection)
             {
                 throw new NotImplementedException();
             }
 
-            public override Type GetElementType(Type[] elementTypes)
+            public Type GetElementType(Type[] elementTypes)
             {
                 throw new NotImplementedException();
             }
 
-            public override int[] GetItemsCount(object collection)
+            public int[] GetItemsCount(object collection)
             {
                 throw new NotImplementedException();
             }
 
-            public override int GetRank(Type declareCollectionType)
+            public int GetRank(Type declareCollectionType)
             {
                 throw new NotImplementedException();
             }

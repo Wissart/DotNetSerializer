@@ -1,4 +1,4 @@
-﻿using DotNetSerializer.Base;
+﻿using DotNetSerializer.Base.CollectionHandlers;
 using System;
 using System.IO;
 using System.Reflection;
@@ -9,7 +9,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
     {
         protected override int Rank => 2;
 
-        public Fixed2DSerializer(PropertyInfo property, CollectionHandler collectionHandler, Type[] elementTypes, IElementSerializer elementSerializer, int[] shape) 
+        public Fixed2DSerializer(PropertyInfo property, ICollectionHandler collectionHandler, Type[] elementTypes, IElementSerializer elementSerializer, int[] shape) 
             : base(property, collectionHandler, elementTypes, elementSerializer, shape)
         {
         }

@@ -1,4 +1,4 @@
-﻿using DotNetSerializer.Base;
+﻿using DotNetSerializer.Base.CollectionHandlers;
 using DotNetSerializer.Base.Exceptions;
 using System;
 using System.IO;
@@ -11,7 +11,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         protected int[] _shape;
 
         protected FixedSerializer(PropertyInfo property, 
-                                CollectionHandler collectionHandler, 
+                                ICollectionHandler collectionHandler, 
                                 Type[] elementTypes,
                                 IElementSerializer elementSerializer, 
                                 int[] shape)

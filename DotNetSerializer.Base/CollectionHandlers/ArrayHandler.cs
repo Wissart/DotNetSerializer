@@ -5,19 +5,19 @@ namespace DotNetSerializer.Base.CollectionHandlers
     /// <summary>
     /// Class for handling array collection creation and manipulation during processing.
     /// </summary>
-    public class ArrayHandler : CollectionHandler
+    public class ArrayHandler : ICollectionHandler
     {
         /// <summary>Gets the array type.</summary>
-        public override Type CollectionType => typeof(Array);
+        public Type CollectionType => typeof(Array);
 
         /// <inheritdoc/>
-        public override object CreateCollection(Type[] elementTypes, int[] sizes)
+        public object CreateCollection(Type[] elementTypes, int[] sizes)
         {
             return Array.CreateInstance(elementTypes[0], sizes);
         }
 
         /// <inheritdoc/>
-        public override object CreateCollectionWithItems(Type[] elementTypes, object[] items)
+        public object CreateCollectionWithItems(Type[] elementTypes, object[] items)
         {
             var array = Array.CreateInstance(elementTypes[0], items.Length);
             items.CopyTo(array, 0);
@@ -25,7 +25,7 @@ namespace DotNetSerializer.Base.CollectionHandlers
         }
 
         /// <inheritdoc/>
-        public override object CreateCollectionWithItems(Type[] elementTypes, object items, int[] sizes)
+        public object CreateCollectionWithItems(Type[] elementTypes, object items, int[] sizes)
         {
             var array = Array.CreateInstance(elementTypes[0], sizes);
             Array.Copy((Array)items, array, array.Length);
@@ -33,7 +33,7 @@ namespace DotNetSerializer.Base.CollectionHandlers
         }
 
         /// <inheritdoc/>
-        public override int GetRank(Type declareCollectionType)
+        public int GetRank(Type declareCollectionType)
         {
             return declareCollectionType.GetArrayRank();
         }
@@ -43,25 +43,25 @@ namespace DotNetSerializer.Base.CollectionHandlers
         /// </summary>
         /// <param name="elementTypes">Type of the collection elements.</param>
         /// <returns>The first type from the types array.</returns>
-        public override Type GetElementType(Type[] elementTypes)
+        public Type GetElementType(Type[] elementTypes)
         {
             return elementTypes[0];
         }
 
         /// <inheritdoc/>
-        public override int[] GetCapacity(object collection)
+        public int[] GetCapacity(object collection)
         {
             return GetArrayDimensions(collection);
         }
 
         /// <inheritdoc/>
-        public override int[] GetItemsCount(object collection)
+        public int[] GetItemsCount(object collection)
         {
             return GetArrayDimensions(collection);
         }
 
         /// <inheritdoc/>
-        public override void AddItem(object collection, object item, params int[] indices)
+        public void AddItem(object collection, object item, params int[] indices)
         {
             ((Array)collection).SetValue(item, indices);
         }

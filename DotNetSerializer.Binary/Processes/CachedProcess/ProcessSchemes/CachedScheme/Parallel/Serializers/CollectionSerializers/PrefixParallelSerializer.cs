@@ -1,4 +1,4 @@
-﻿using DotNetSerializer.Base;
+﻿using DotNetSerializer.Base.CollectionHandlers;
 using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Serializers;
 using System;
 using System.IO;
@@ -10,7 +10,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
     {
         protected readonly int _elementSize;
         protected PrefixParallelSerializer(PropertyInfo property, 
-            CollectionHandler collectionHandler, 
+            ICollectionHandler collectionHandler, 
             Type[] elementTypes, 
             IElementSerializer elementSerializer,
             int elementSize) 

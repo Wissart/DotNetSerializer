@@ -1,5 +1,6 @@
 ﻿using DotNetSerializer.Base;
 using DotNetSerializer.Base.Attributes;
+using DotNetSerializer.Base.CollectionHandlers;
 using DotNetSerializer.Base.Exceptions;
 using DotNetSerializer.Base.Utilities;
 using DotNetSerializer.Binary.Converters;
@@ -137,7 +138,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         }
 
         public FixedSerializer CreateFixedSerializer(PropertyInfo property,
-            CollectionHandler handler,
+            ICollectionHandler handler,
             int rank,
             int[] shape,
             Type[] elementTypes,
@@ -157,7 +158,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         }
 
         public PrefixSerializer CreatePrefixSerializer(PropertyInfo property,
-            CollectionHandler handler,
+            ICollectionHandler handler,
             int rank,
             Type[] elementTypes,
             IElementSerializer elementSerializer)
