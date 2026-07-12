@@ -7,15 +7,15 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
         private IDeserializationProcess _deserializationProcess;
         private ISerializationProcess _serializationProcess;
 
-        public DefaultProcessProvider(BinaryOptions options) 
-            : base(options)
+        public DefaultProcessProvider(BinaryConfiguration configuration) 
+            : base(configuration)
         {
         }
 
         public override IDeserializationProcess GetDeserializationProcess()
         {
             if(_deserializationProcess == null)
-                _deserializationProcess = new DefaultDeserializationProcess(_options);
+                _deserializationProcess = new DefaultDeserializationProcess(_configuration);
 
             return _deserializationProcess;
         }
@@ -23,7 +23,7 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
         public override ISerializationProcess GetSerializationProcess()
         {
             if (_serializationProcess == null)
-                _serializationProcess = new DefaultSerializationProcess(_options);
+                _serializationProcess = new DefaultSerializationProcess(_configuration);
 
             return _serializationProcess;
         }

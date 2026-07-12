@@ -3,7 +3,6 @@ using DotNetSerializer.Base.Processes;
 using DotNetSerializer.Binary.Processes.CachedProcess;
 using DotNetSerializer.Binary.Processes.DefaultProcess;
 using System;
-using System.Collections.Generic;
 using DotNetSerializer.Binary.Processes;
 
 namespace DotNetSerializer.Binary
@@ -13,9 +12,16 @@ namespace DotNetSerializer.Binary
     /// </summary>
     public class BinarySerializer : Serializer
     {
-        private readonly BinaryOptions _options;
-        
-        private readonly Dictionary<ProcessType, ProcessProvider> _processProviders;
+        private readonly ProcessProvider _processProvider;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BinarySerializer"/> class with the default binary options.
+        /// </summary>
+        public BinarySerializer()
+        {
+            var configuration = new BinaryConfiguration(new BinaryOptions());
+            _processProvider = GetProcessProvider(configuration);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BinarySerializer"/> class with the specified binary options.
@@ -23,37 +29,30 @@ namespace DotNetSerializer.Binary
         /// <param name="options">The configuration options for binary serialization.</param>
         public BinarySerializer(BinaryOptions options)
         {
-            _options = options;
-
-            _processProviders = new Dictionary<ProcessType, ProcessProvider>();
+            var configuration = new BinaryConfiguration(options);
+            _processProvider = GetProcessProvider(configuration);
         }
 
         protected override IDeserializationProcess GetDeserializationProcess()
         {
-            if (!_processProviders.ContainsKey(_options.ProcessType))
-                _processProviders[_options.ProcessType] = GetProcessProvider(_options.ProcessType);
-
-            return _processProviders[_options.ProcessType].GetDeserializationProcess();
+            return _processProvider.GetDeserializationProcess();
         }
 
         protected override ISerializationProcess GetSerializationProcess()
         {
-            if (!_processProviders.ContainsKey(_options.ProcessType))
-                _processProviders[_options.ProcessType] = GetProcessProvider(_options.ProcessType);
-
-            return _processProviders[_options.ProcessType].GetSerializationProcess();
+            return _processProvider.GetSerializationProcess();
         }
 
-        private ProcessProvider GetProcessProvider(ProcessType processType)
+        private ProcessProvider GetProcessProvider(BinaryConfiguration configuration)
         {
-            switch (processType)
+            switch (configuration.Options.ProcessType)
             {
                 case ProcessType.Default:
-                    return new DefaultProcessProvider(_options);
+                    return new DefaultProcessProvider(configuration);
                 case ProcessType.Cached:
-                    return new CachedProcessProvider(_options);
+                    return new CachedProcessProvider(configuration);
                 default:
-                    throw new ArgumentException(nameof(processType));
+                    throw new ArgumentException(nameof(configuration.Options.ProcessType));
             }
         }
     }

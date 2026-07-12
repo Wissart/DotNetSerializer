@@ -11,8 +11,8 @@ namespace DotNetSerializer.Binary.Processes
 {
     internal abstract class SerializationProcessBase : ProcessBase, ISerializationProcess
     {
-        protected SerializationProcessBase(BinaryOptions options) 
-            : base(options)
+        protected SerializationProcessBase(BinaryConfiguration configuration) 
+            : base(configuration)
         {
         }
 
@@ -47,7 +47,7 @@ namespace DotNetSerializer.Binary.Processes
 
             if (SerializationUtilities.IsClass(valueType))
             {
-                if (Options.TypeInfoStorage.Get(valueType).IsVersionable)
+                if (TypeInfoStorage.Get(valueType).IsVersionable)
                 {
                     if (Options.Converters.Items.TryGetValue(converterType, out BinaryConverter converter))
                         VersionableSerializer.SerializeWithConverter(writer, converter, value, context, SerializeVersionableObject);
@@ -71,7 +71,7 @@ namespace DotNetSerializer.Binary.Processes
 
         protected void SerializeVersionableObject(BinaryWriter writer, BinaryContext context)
         {
-            var typeInfo = Options.TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
 
             SerializeVersion(writer, context);
 
@@ -81,7 +81,7 @@ namespace DotNetSerializer.Binary.Processes
 
         private void SerializeVersion(BinaryWriter writer, BinaryContext context)
         {
-            var typeInfo = Options.TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
             var properties = typeInfo.Properties;
 
             var versionPropPos = typeInfo.GetVersionPropertyID();
@@ -94,7 +94,7 @@ namespace DotNetSerializer.Binary.Processes
 
         protected void SerializeClassObject(BinaryWriter writer, BinaryContext context)
         {
-            var typeInfo = Options.TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
 
             var properties = typeInfo.GetPropertiesByVersion(context.Version);
             SerializeProperties(writer, properties, properties.Length, context);

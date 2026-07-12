@@ -10,18 +10,29 @@ namespace DotNetSerializer.Base.Storages
     /// </summary>
     public class DefaultAttributeStorage : DictionaryWrapper<Type, DotNetSerializerAttribute>
     {
-        private readonly HashSet<Type> _allowAttributes;
+        private static HashSet<Type> _allowAttributes;
 
-        /// <summary>
-        /// Initializes with the settled base default attributes (StringFormat, Collection).
-        /// </summary>
-        public DefaultAttributeStorage()
+        static DefaultAttributeStorage()
         {
             _allowAttributes = new HashSet<Type>()
             {
                 typeof(StringFormatAttribute),
                 typeof(CollectionAttribute),
             };
+        }
+
+        /// <summary>
+        /// Initializes with the settled base default attributes (StringFormat, Collection).
+        /// </summary>
+        public DefaultAttributeStorage() { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultAttributeStorage"/> class by copying items from specified source.
+        /// </summary>
+        /// <param name="source">The source <see cref="DefaultAttributeStorage"/> class to copy from.</param>
+        public DefaultAttributeStorage(DictionaryWrapper<Type, DotNetSerializerAttribute> source) 
+            : base(source)
+        {
         }
 
         /// <summary>

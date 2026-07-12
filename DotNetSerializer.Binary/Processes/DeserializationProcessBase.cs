@@ -1,5 +1,6 @@
 ﻿using DotNetSerializer.Base.Exceptions;
 using DotNetSerializer.Base.Processes;
+using DotNetSerializer.Base.Storages;
 using DotNetSerializer.Base.Utilities;
 using DotNetSerializer.Binary.Converters;
 using DotNetSerializer.Binary.Processes.Common.Base;
@@ -11,8 +12,8 @@ namespace DotNetSerializer.Binary.Processes
 {
     internal abstract class DeserializationProcessBase : ProcessBase, IDeserializationProcess
     {
-        protected DeserializationProcessBase(BinaryOptions options) 
-            : base(options)
+        protected DeserializationProcessBase(BinaryConfiguration configuration) 
+            : base(configuration)
         {
         }
 
@@ -54,7 +55,7 @@ namespace DotNetSerializer.Binary.Processes
         {
             if (SerializationUtilities.IsClass(valueType))
             {
-                if (Options.TypeInfoStorage.Get(valueType).IsVersionable)
+                if (TypeInfoStorage.Get(valueType).IsVersionable)
                 {
                     if (Options.Converters.Items.TryGetValue(converterType, out BinaryConverter converter))
                         return VersionableSerializer.DeserializeWithConverter(reader, converter, context, DeserializeVersionableObject);
@@ -78,7 +79,7 @@ namespace DotNetSerializer.Binary.Processes
 
         protected void DeserializeVersionableObject(BinaryReader reader, BinaryContext context)
         {
-            var typeInfo = Options.TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
 
             DeserializeVersion(reader, context);
 
@@ -88,7 +89,7 @@ namespace DotNetSerializer.Binary.Processes
 
         private void DeserializeVersion(BinaryReader reader, BinaryContext context)
         {
-            var typeInfo = Options.TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
             var properties = typeInfo.Properties;
 
             var versionPropPos = typeInfo.GetVersionPropertyID();
@@ -101,7 +102,7 @@ namespace DotNetSerializer.Binary.Processes
 
         protected void DeserializeClassObject(BinaryReader reader, BinaryContext context)
         {
-            var typeInfo = Options.TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
 
             var properties = typeInfo.GetPropertiesByVersion(context.Version);
             DeserializeProperties(reader, properties, properties.Length, context);

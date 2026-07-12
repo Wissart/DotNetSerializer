@@ -8,9 +8,6 @@ namespace DotNetSerializer.Base
     /// </summary>
     public abstract class Serializer
     {
-        protected IDeserializationProcess _deserializationProcess;
-        protected ISerializationProcess _serializationProcess;
-
         protected abstract IDeserializationProcess GetDeserializationProcess();
         protected abstract ISerializationProcess GetSerializationProcess();
 

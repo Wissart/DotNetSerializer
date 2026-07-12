@@ -1,4 +1,5 @@
-﻿using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes;
+﻿using DotNetSerializer.Base.Storages;
+using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes;
 using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme;
 using System;
 using System.IO;
@@ -9,8 +10,8 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess
     {
         public ISerializerProvider<CachedProcessScheme> SerializerProvider { get; }
 
-        public CachedSerializationProcess(BinaryOptions options, ISerializerProvider<CachedProcessScheme> serializerProvider) 
-            : base(options)
+        public CachedSerializationProcess(BinaryConfiguration configuration, ISerializerProvider<CachedProcessScheme> serializerProvider) 
+            : base(configuration)
         {
             SerializerProvider = serializerProvider;
         }

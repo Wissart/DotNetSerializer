@@ -38,12 +38,13 @@ namespace DotNetSerializer.Binary.Tests.Unit
         private BinarySerializer CreateSerializer(ProcessType processType, CachedProcessType cachedType,
             CachingTargets targets, params BinaryConverter[] converterTypes)
         {
-            var options = new BinaryOptions
+            BinaryOptions options;
+            if (processType == ProcessType.Cached)
             {
-                ProcessType = processType
-            };
-            options.CachedProcessSettings.ProcessType = cachedType;
-            options.CachedProcessSettings.CachingTargets = targets;
+                options = new BinaryOptions(cachedType, targets);
+            }
+            else
+                options = new BinaryOptions();
 
             foreach (var converterType in converterTypes)
             {

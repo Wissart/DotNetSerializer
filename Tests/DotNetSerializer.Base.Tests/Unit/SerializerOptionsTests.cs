@@ -14,7 +14,6 @@ namespace DotNetSerializer.Base.Tests.Unit
         {
             var options = new SerializerOptionsObject();
 
-            Assert.IsNotNull(options.TypeInfoStorage);
             Assert.IsNotNull(options.CollectionHandlers);
             Assert.AreEqual(2, options.CollectionHandlers.Items.Count);
             Assert.IsNotNull(options.CollectionHandlers.Items[typeof(Array)]);

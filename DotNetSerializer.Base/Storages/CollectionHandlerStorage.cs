@@ -10,6 +10,22 @@ namespace DotNetSerializer.Base.Storages
     public class CollectionHandlerStorage : DictionaryWrapper<Type, ICollectionHandler>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CollectionHandlerStorage"/> class.
+        /// </summary>
+        public CollectionHandlerStorage()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollectionHandlerStorage"/> class by copying items from specified source.
+        /// </summary>
+        /// <param name="source">The source <see cref="CollectionHandlerStorage"/> class to copy from.</param>
+        public CollectionHandlerStorage(DictionaryWrapper<Type, ICollectionHandler> source) 
+            : base(source)
+        {
+        }
+
+        /// <summary>
         /// Determines  whether the specified type is contained.
         /// </summary>
         /// <param name="collectionType">The type of the collection handler.</param>

@@ -1,5 +1,6 @@
 ﻿using DotNetSerializer.Base.CollectionHandlers;
 using DotNetSerializer.Base.Storages;
+using System;
 
 namespace DotNetSerializer.Base
 {
@@ -8,8 +9,9 @@ namespace DotNetSerializer.Base
     /// </summary>
     public abstract class SerializerOptions
     {
-        /// <summary></summary>
-        public TypeInfoStorage TypeInfoStorage { get; }
+        // TODO: refactor: replace to process
+        ///// <summary></summary>
+        //public TypeInfoStorage TypeInfoStorage { get; }
 
         /// <summary>Gets the default attribute storage.</summary>
         public DefaultAttributeStorage DefaultAttributes { get; }
@@ -19,17 +21,33 @@ namespace DotNetSerializer.Base
         public bool RequireEnd { get; }
 
         /// <summary>
-        /// Initializes a new options instance and registers default converters.
+        /// Initializes a new options instance with default parameters.
         /// </summary>
         public SerializerOptions()
         {
-            TypeInfoStorage = new TypeInfoStorage();
             DefaultAttributes = new DefaultAttributeStorage();
             CollectionHandlers = new CollectionHandlerStorage();
 
             RequireEnd = true;
 
             RegisterCollectionHandlers();
+        }
+
+        /// <summary>
+        /// Initializes a new options instance by copying parameters from the specified source options.
+        /// </summary>
+        /// <param name="options">The source options to copy from.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="options"/> is <see langword="null"/>.</exception>
+        public SerializerOptions(SerializerOptions options)
+        {
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
+
+            DefaultAttributes = new DefaultAttributeStorage(options.DefaultAttributes);
+            CollectionHandlers = new CollectionHandlerStorage(options.CollectionHandlers);
+
+            RequireEnd = options.RequireEnd;
         }
 
         private void RegisterCollectionHandlers()

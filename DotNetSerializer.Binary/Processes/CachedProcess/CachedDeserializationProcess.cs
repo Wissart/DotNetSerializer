@@ -11,8 +11,8 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess
     {
         public ISerializerProvider<CachedProcessScheme> SerializerProvider { get; }
 
-        public CachedDeserializationProcess(BinaryOptions options, ISerializerProvider<CachedProcessScheme> serializerProvider) 
-            : base(options)
+        public CachedDeserializationProcess(BinaryConfiguration configuration, ISerializerProvider<CachedProcessScheme> serializerProvider) 
+            : base(configuration)
         {
             SerializerProvider = serializerProvider;
         }

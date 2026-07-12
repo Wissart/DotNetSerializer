@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNetSerializer.Base.Storages;
+using System;
 
 namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Parallel
 {
@@ -6,10 +7,10 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
     {
         private readonly SchemeStorage<CachedProcessScheme> _cachedSchemeStorage;
 
-        public ParallelSchemeStorage(BinaryOptions options, 
+        public ParallelSchemeStorage(TypeInfoStorage typeInfoStorage, 
             ISchemeMaker schemeMaker,
             SchemeStorage<CachedProcessScheme> cachedSchemeStorage) 
-            : base(options, schemeMaker)
+            : base(typeInfoStorage, schemeMaker)
         {
             _cachedSchemeStorage = cachedSchemeStorage;
         }

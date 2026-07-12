@@ -1,12 +1,16 @@
-﻿namespace DotNetSerializer.Binary.Processes
+﻿using DotNetSerializer.Base.Storages;
+
+namespace DotNetSerializer.Binary.Processes
 {
     internal abstract class ProcessBase
     {
         public BinaryOptions Options { get; }
+        public TypeInfoStorage TypeInfoStorage { get; }
 
-        public ProcessBase(BinaryOptions options)
+        public ProcessBase(BinaryConfiguration configuration)
         {
-            Options = options;
+            Options = configuration.Options;
+            TypeInfoStorage = configuration.TypeInfoStorage;
         }
     }
 }

@@ -4,11 +4,11 @@ namespace DotNetSerializer.Binary.Processes
 {
     internal abstract class ProcessProvider
     {
-        protected readonly BinaryOptions _options;
+        protected readonly BinaryConfiguration _configuration;
 
-        public ProcessProvider(BinaryOptions options)
+        public ProcessProvider(BinaryConfiguration configuration)
         {
-            _options = options;
+            _configuration = configuration;
         }
 
         public abstract IDeserializationProcess GetDeserializationProcess();

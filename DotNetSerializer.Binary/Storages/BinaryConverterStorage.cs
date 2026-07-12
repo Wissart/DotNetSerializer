@@ -12,6 +12,22 @@ namespace DotNetSerializer.Binary.Storages
     public class BinaryConverterStorage : DictionaryWrapper<Type, BinaryConverter>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="BinaryConverterStorage"/> class.
+        /// </summary>
+        public BinaryConverterStorage()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BinaryConverterStorage"/> class by copying items from specified source.
+        /// </summary>
+        /// <param name="source">The source <see cref="BinaryConverterStorage"/> class to copy from.</param>
+        public BinaryConverterStorage(DictionaryWrapper<Type, BinaryConverter> source) 
+            : base(source)
+        {
+        }
+
+        /// <summary>
         /// Determines whether the specified converter type is contained.
         /// </summary>
         /// <param name="converterType">The type of converter.</param>

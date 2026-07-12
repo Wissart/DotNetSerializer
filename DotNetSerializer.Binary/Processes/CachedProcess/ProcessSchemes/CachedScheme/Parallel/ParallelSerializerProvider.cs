@@ -1,5 +1,4 @@
-﻿using DotNetSerializer.Base;
-using DotNetSerializer.Base.Attributes;
+﻿using DotNetSerializer.Base.Attributes;
 using DotNetSerializer.Base.CollectionHandlers;
 using DotNetSerializer.Base.Exceptions;
 using DotNetSerializer.Base.Utilities;
@@ -15,17 +14,17 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 {
     internal class ParallelSerializerProvider : ISerializerProvider<ParallelProcessScheme>, ISchemeMaker
     {
-        private readonly BinaryOptions _options;
+        private readonly BinaryConfiguration _configuration;
         private readonly CachedSerializerProvider _cachedSerializerProvider;
 
         public SchemeStorage<ParallelProcessScheme> Schemes { get; }
 
-        public ParallelSerializerProvider(BinaryOptions options,
+        public ParallelSerializerProvider(BinaryConfiguration configuration,
             CachedSerializerProvider cachedSerializerProvider)
         {
-            _options = options;
+            _configuration = configuration;
             _cachedSerializerProvider = cachedSerializerProvider;
-            Schemes = new ParallelSchemeStorage(options, this, cachedSerializerProvider.Schemes);
+            Schemes = new ParallelSchemeStorage(configuration.TypeInfoStorage, this, cachedSerializerProvider.Schemes);
         }
 
         public CollectionSerializer GetCollectionSerializer(Type declareCollectionType, Type[] elementTypes)
@@ -57,13 +56,13 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
             var attribute = AttributeUtilities.GetCollectionAttribute(property);
             if (attribute == null)
-                attribute = _options.DefaultAttributes.Get<CollectionAttribute>();
+                attribute = _configuration.Options.DefaultAttributes.Get<CollectionAttribute>();
 
             var sizeType = attribute.SizeType;
 
             var collectionType = CollectionUtilities.GetCollectionType(declareCollectionType);
 
-            var handler = _options.CollectionHandlers.Get(collectionType);
+            var handler = _configuration.Options.CollectionHandlers.Get(collectionType);
             var rank = handler.GetRank(declareCollectionType);
             var elementType = handler.GetElementType(elementTypes);
             var elementSerializer = _cachedSerializerProvider.CreateElementSerializer(property, elementType);

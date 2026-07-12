@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinaryConfiguration.cs" />
     <Compile Include="Storages\BinaryConverterStorage.cs" />
     <Compile Include="BinaryContext.cs" />
     <Compile Include="Processes\CachedProcess\CachedProcessProvider.cs" />

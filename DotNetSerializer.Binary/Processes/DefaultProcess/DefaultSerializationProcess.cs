@@ -10,8 +10,8 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
 {
     internal class DefaultSerializationProcess : SerializationProcessBase
     {
-        public DefaultSerializationProcess(BinaryOptions options) 
-            : base(options)
+        public DefaultSerializationProcess(BinaryConfiguration configuration) 
+            : base(configuration)
         {
         }
 
@@ -79,7 +79,7 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
         {
             if (SerializationUtilities.IsClass(itemType))
             {
-                if (Options.TypeInfoStorage.Get(itemType).IsVersionable)
+                if (TypeInfoStorage.Get(itemType).IsVersionable)
                 {
                     if (Options.Converters.Items.TryGetValue(itemType, out BinaryConverter converter))
                         return (writer, item, context) =>

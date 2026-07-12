@@ -1,6 +1,7 @@
 ﻿using DotNetSerializer.Base.Attributes;
 using DotNetSerializer.Base.CollectionHandlers;
 using DotNetSerializer.Base.Exceptions;
+using DotNetSerializer.Base.Storages;
 using DotNetSerializer.Base.Utilities;
 using DotNetSerializer.Binary.Converters;
 using DotNetSerializer.Binary.Processes.Common.Base;
@@ -11,8 +12,8 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
 {
     internal class DefaultDeserializationProcess : DeserializationProcessBase
     {
-        public DefaultDeserializationProcess(BinaryOptions options) 
-            : base(options)
+        public DefaultDeserializationProcess(BinaryConfiguration configuration) 
+            : base(configuration)
         {
         }
 
@@ -113,7 +114,7 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
         {
             if (SerializationUtilities.IsClass(itemType))
             {
-                if (Options.TypeInfoStorage.Get(itemType).IsVersionable)
+                if (TypeInfoStorage.Get(itemType).IsVersionable)
                 {
                     if (Options.Converters.Items.TryGetValue(itemType, out BinaryConverter converter))
                         return (reader, context) =>

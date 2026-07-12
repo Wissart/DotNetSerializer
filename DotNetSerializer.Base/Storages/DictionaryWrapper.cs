@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DotNetSerializer.Base.Storages
 {
@@ -23,6 +24,21 @@ namespace DotNetSerializer.Base.Storages
         {
             _storage = new Dictionary<TKey, TValue>();
         }
+
+        /// <summary>
+        /// Initializes a new instance of the dictionary wrapper by copying items from specified source.
+        /// </summary>
+        /// <param name="source">The source dictionary wrapper to copy from.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
+        public DictionaryWrapper(DictionaryWrapper<TKey, TValue> source)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            _storage = new Dictionary<TKey, TValue>(source._storage);
+        }
+
+
 
         /// <summary>
         /// Retrieves a value by key using custom logic.

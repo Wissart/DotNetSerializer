@@ -28,7 +28,7 @@ namespace DotNetSerializer.Binary
     }
 
     /// <summary>
-    /// Specified which targets are eligible for cahcing
+    /// Specified which targets are eligible for caching
     /// </summary>
     public enum CachingTargets
     {
@@ -41,7 +41,7 @@ namespace DotNetSerializer.Binary
     /// <summary>
     /// Configuration settings for cached processing behavior.
     /// </summary>
-    public class CachedProcessSettings
+    public struct CachedProcessSettings
     {
         /// <summary>Gets or sets the execution mode for caching.</summary>
         public CachedProcessType ProcessType { get; set; }
@@ -54,45 +54,85 @@ namespace DotNetSerializer.Binary
     /// </summary>
     public class BinaryOptions : SerializerOptions
     {
+        private static readonly BinaryConverterStorage _defaultConverters;
+
+
         /// <summary>Gets the converter registry for custom serialization.</summary>
         public BinaryConverterStorage Converters { get; }
+
+        /// <summary>Gets or sets the processing mode for serialization.</summary>
+        public ProcessType ProcessType { get; }
 
         /// <summary>Gets the setting for cahced processing behavior.</summary>
         public CachedProcessSettings CachedProcessSettings { get; }
 
-        /// <summary>Gets or sets the processing mode for serialization.</summary>
-        public ProcessType ProcessType { get; set; }
-
+        /// <summary>
+        /// Initializes the static configuration parameters.
+        /// </summary>
+        static BinaryOptions()
+        {
+            _defaultConverters = new BinaryConverterStorage();
+            RegisterDefaultConverters();
+        }
 
         /// <summary>
-        /// Initializes the settings for cached processing behavior.
+        /// Initializes a new instance of the <see cref="BinaryOptions"/> class with default parameters.
         /// </summary>
         public BinaryOptions()
         {
-            Converters = new BinaryConverterStorage();
-            CachedProcessSettings = new CachedProcessSettings();
-
-
-            AddDefaultConverters();
+            ProcessType = ProcessType.Default;
+            Converters = new BinaryConverterStorage(_defaultConverters);
+            RegisterConverters();
         }
 
-        private void AddDefaultConverters()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BinaryOptions"/> class with the specified cached process settings.
+        /// </summary>
+        /// <param name="cachedProcessType">The execution mode for cached processing.</param>
+        /// <param name="targets">The type of targets are eligible for caching.</param>
+        public BinaryOptions(CachedProcessType cachedProcessType, CachingTargets targets)
+            : this()
         {
-            Converters.Add<BoolConverter>();
-            Converters.Add<ByteConverter>();
-            Converters.Add<SByteConverter>();
-            Converters.Add<Int16Converter>();
-            Converters.Add<Int32Converter>();
-            Converters.Add<Int64Converter>();
-            Converters.Add<UInt16Converter>();
-            Converters.Add<UInt32Converter>();
-            Converters.Add<UInt64Converter>();
-            Converters.Add<SingleConverter>();
-            Converters.Add<DoubleConverter>();
-            Converters.Add<DecimalConverter>();
-            Converters.Add<CharConverter>();
+            ProcessType = ProcessType.Cached;
+            CachedProcessSettings = new CachedProcessSettings
+            {
+                ProcessType = cachedProcessType,
+                CachingTargets = targets
+            };
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BinaryOptions"/> class by copying parameters from specified source options.
+        /// </summary>
+        /// <param name="options">The source <see cref="BinaryOptions"/> class to copy from.</param>
+        public BinaryOptions(BinaryOptions options) 
+            : base(options)
+        {
+            Converters = new BinaryConverterStorage(options.Converters);
+            ProcessType = options.ProcessType;
+            CachedProcessSettings = options.CachedProcessSettings;
+        }
+
+        private void RegisterConverters()
+        {
             Converters.Add(new StringConverter(DefaultAttributes));
+        }
+
+        private static void RegisterDefaultConverters()
+        {
+            _defaultConverters.Add<BoolConverter>();
+            _defaultConverters.Add<ByteConverter>();
+            _defaultConverters.Add<SByteConverter>();
+            _defaultConverters.Add<Int16Converter>();
+            _defaultConverters.Add<Int32Converter>();
+            _defaultConverters.Add<Int64Converter>();
+            _defaultConverters.Add<UInt16Converter>();
+            _defaultConverters.Add<UInt32Converter>();
+            _defaultConverters.Add<UInt64Converter>();
+            _defaultConverters.Add<SingleConverter>();
+            _defaultConverters.Add<DoubleConverter>();
+            _defaultConverters.Add<DecimalConverter>();
+            _defaultConverters.Add<CharConverter>();
         }
     }
 }

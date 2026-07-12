@@ -15,13 +15,13 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 {
     internal class CachedSerializerProvider : ISerializerProvider<CachedProcessScheme>, ISchemeMaker
     {
-        private readonly BinaryOptions _options;
+        private readonly BinaryConfiguration _configuration;
         public SchemeStorage<CachedProcessScheme> Schemes { get; }
 
-        public CachedSerializerProvider(BinaryOptions options)
+        public CachedSerializerProvider(BinaryConfiguration configuration)
         {
-            _options = options;
-            Schemes = new SchemeStorage<CachedProcessScheme>(options, this);
+            _configuration = configuration;
+            Schemes = new SchemeStorage<CachedProcessScheme>(configuration.TypeInfoStorage, this);
         }
 
         public CollectionSerializer GetCollectionSerializer(Type declareCollectionType, Type[] elementTypes)
@@ -33,7 +33,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         {
             var collectionType = CollectionUtilities.GetCollectionType(declareCollectionType);
 
-            var handler = _options.CollectionHandlers.Get(collectionType);
+            var handler = _configuration.Options.CollectionHandlers.Get(collectionType);
             var rank = handler.GetRank(declareCollectionType);
             var elementType = handler.GetElementType(elementTypes);
             var elementSerializer = CreateElementSerializer(elementType);
@@ -79,13 +79,13 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         {
             var attribute = AttributeUtilities.GetCollectionAttribute(property);
             if (attribute == null)
-                attribute = _options.DefaultAttributes.Get<CollectionAttribute>();
+                attribute = _configuration.Options.DefaultAttributes.Get<CollectionAttribute>();
 
             var sizeType = attribute.SizeType;
 
             var collectionType = CollectionUtilities.GetCollectionType(declareCollectionType);
 
-            var handler = _options.CollectionHandlers.Get(collectionType);
+            var handler = _configuration.Options.CollectionHandlers.Get(collectionType);
             var rank = handler.GetRank(declareCollectionType);
             var elementType = handler.GetElementType(elementTypes);
             var elementSerializer = CreateElementSerializer(property, elementType);
@@ -115,7 +115,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         {
             var collectionType = CollectionUtilities.GetCollectionType(declareCollectionType);
 
-            var handler = _options.CollectionHandlers.Get(collectionType);
+            var handler = _configuration.Options.CollectionHandlers.Get(collectionType);
             var rank = handler.GetRank(declareCollectionType);
             var elementType = handler.GetElementType(elementTypes);
             var elementSerializer = CreateElementSerializer(property, elementType);
@@ -130,7 +130,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             if (converterAttribute != null)
             {
                 converterType = converterAttribute.ConverterType;
-                if (!_options.Converters.Contains(converterType))
+                if (!_configuration.Options.Converters.Contains(converterType))
                     throw new ConverterNotFoundException(converterType);
             }
 
@@ -182,16 +182,16 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             {
                 var scheme = Schemes.Get(valueType);
 
-                if (_options.TypeInfoStorage.Get(valueType).IsVersionable)
+                if (_configuration.TypeInfoStorage.Get(valueType).IsVersionable)
                 {
-                    if (_options.Converters.Items.TryGetValue(converterType, out BinaryConverter converter))
+                    if (_configuration.Options.Converters.Items.TryGetValue(converterType, out BinaryConverter converter))
                         return new CachedVersionableSerializerWithConverter(property, scheme, converter);
                     else
                         return new CachedVersionableSerializer(property, scheme);
                 }
                 else
                 {
-                    if (_options.Converters.Items.TryGetValue(converterType, out BinaryConverter converter))
+                    if (_configuration.Options.Converters.Items.TryGetValue(converterType, out BinaryConverter converter))
                         return new CachedClassSerializerWithConverter(property, scheme, converter);
                     else
                         return new CachedClassSerializer(property, scheme);
@@ -199,7 +199,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             }
             else
             {
-                var converter = _options.Converters.Get(converterType);
+                var converter = _configuration.Options.Converters.Get(converterType);
                 return CreateNonClassSerializer(property, converter);
             }
         }
@@ -210,12 +210,12 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             {
                 StringFormatAttribute attriute;
                 if (property == null)
-                    attriute = _options.DefaultAttributes.Get<StringFormatAttribute>();
+                    attriute = _configuration.Options.DefaultAttributes.Get<StringFormatAttribute>();
                 else
                 {
                     attriute = AttributeUtilities.GetStringFormatAttribute(property);
                     if (attriute == null)
-                        attriute = _options.DefaultAttributes.Get<StringFormatAttribute>();
+                        attriute = _configuration.Options.DefaultAttributes.Get<StringFormatAttribute>();
                 }
                     
 

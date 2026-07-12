@@ -1,4 +1,5 @@
-﻿using DotNetSerializer.Base.Utilities;
+﻿using DotNetSerializer.Base.Storages;
+using DotNetSerializer.Base.Utilities;
 using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes;
 using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Parallel;
 using DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Parallel.Utilities.ProcessPool;
@@ -12,8 +13,8 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.Parallel
     {
         public ISerializerProvider<ParallelProcessScheme> SerializerProvider { get; }
 
-        public ParallelDeserializationProcess(BinaryOptions options, ISerializerProvider<ParallelProcessScheme> serializerProvider) 
-            : base(options)
+        public ParallelDeserializationProcess(BinaryConfiguration configuration, ISerializerProvider<ParallelProcessScheme> serializerProvider) 
+            : base(configuration)
         {
             SerializerProvider = serializerProvider;
         }
