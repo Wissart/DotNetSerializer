@@ -31,7 +31,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
             ParallelProcessPool.AddTask(context.ProcessID, () =>
             {
-                using (PrepContextScope(cloneData, out BinaryContext prepMetaData))
+                using (ElementContextScope(cloneData, out BinaryContext prepMetaData))
                 {
                     for (int i = 0; i < shape[0]; i++)
                     {

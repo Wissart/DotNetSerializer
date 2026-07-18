@@ -38,7 +38,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
         public PropertySerializer GetCollectionSerializer(Type[] elementTypes, BinaryContext context)
         {
-            var propertyName = context.ObjectContext.Property.Name;
+            var propertyName = context.MetaData.Property.Name;
             if (!_serializers.ContainsKey(propertyName))
                 _serializers[propertyName] = _schemeMaker.GetCollectionSerializerByProperty(elementTypes, context);
 
@@ -65,7 +65,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             var serializers = new PropertySerializer[properties.Length];
             for (int i = 0; i < serializers.Length; i++)
             {
-                context.ObjectContext.Property = (properties[i]);
+                context.MetaData.Property = (properties[i]);
                 serializers[i] = GetSerializer(properties[i], context);
             }
 

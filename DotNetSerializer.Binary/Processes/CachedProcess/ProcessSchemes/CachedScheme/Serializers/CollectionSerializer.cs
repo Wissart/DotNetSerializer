@@ -22,38 +22,39 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             _elementSerializer = elementSerializer;
         }
 
-        protected IDisposable PrepContextScope(BinaryContext context, out BinaryContext prepContext)
+        protected IDisposable ElementContextScope(BinaryContext context, out BinaryContext prepContext)
         {
-            var prep = _elementSerializer.PrepareContext(context);
+            var prep = _elementSerializer.ElementContext(context);
             prepContext = prep;
             return DisposableScope.Create(() =>
             {
-                _elementSerializer.FreeObjectContext(prep);
+                _elementSerializer.RemoveLastObjectContext(prep);
             });
         }
 
         protected object[] Deserialize1D(BinaryReader reader, int[] shape, BinaryContext context)
         {
             var items = new object[shape[0]];
-            using (PrepContextScope(context, out BinaryContext prepContext))
+            using (ElementContextScope(context, out BinaryContext elementContext))
             {
                 for (int i = 0; i < shape[0]; i++)
                 {
-                    items[i] = _elementSerializer.DeserializeElement(reader, prepContext);
+                    items[i] = _elementSerializer.DeserializeElement(reader, elementContext);
                 }
             }
             return items;
         }
+
         protected object[,] Deserialize2D(BinaryReader reader, int[] shape, BinaryContext context)
         {
             var items = new object[shape[0], shape[1]];
-            using (PrepContextScope(context, out BinaryContext prepContext))
+            using (ElementContextScope(context, out BinaryContext elementContext))
             {
                 for (int i = 0; i < shape[0]; i++)
                 {
                     for (int j = 0; j < shape[1]; j++)
                     {
-                        items[i, j] = _elementSerializer.DeserializeElement(reader, prepContext);
+                        items[i, j] = _elementSerializer.DeserializeElement(reader, elementContext);
                     }
                 }
             }
@@ -62,7 +63,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         protected object[,,] Deserialize3D(BinaryReader reader, int[] shape, BinaryContext context)
         {
             var items = new object[shape[0], shape[1], shape[2]];
-            using (PrepContextScope(context, out BinaryContext prepContext))
+            using (ElementContextScope(context, out BinaryContext elementContext))
             {
                 for (int i = 0; i < shape[0]; i++)
                 {
@@ -70,7 +71,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
                     {
                         for (int k = 0; k < shape[2]; k++)
                         {
-                            items[i, j, k] = _elementSerializer.DeserializeElement(reader, prepContext);
+                            items[i, j, k] = _elementSerializer.DeserializeElement(reader, elementContext);
                         }
                     }
                 }
@@ -80,11 +81,11 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
         protected void SerializeCollection(BinaryWriter writer, object collection, BinaryContext context)
         {
-            using (PrepContextScope(context, out BinaryContext prepContext))
+            using (ElementContextScope(context, out BinaryContext elementContext))
             {
                 foreach (var item in (ICollection)collection)
                 {
-                    _elementSerializer.SerializeElement(writer, item, prepContext);
+                    _elementSerializer.SerializeElement(writer, item, elementContext);
                 }
             }
         }

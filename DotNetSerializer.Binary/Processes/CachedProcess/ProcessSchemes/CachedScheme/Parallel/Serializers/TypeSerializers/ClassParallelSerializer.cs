@@ -29,7 +29,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
             ParallelProcessPool.AddTask(context.ProcessID, () =>
             {
-                using (cloneData.NewObjectContextScope(obj))
+                using (cloneData.CreateMetaDataScope(obj))
                     DeserializeClassObject(partReader, cloneData);
 
                 partReader.Close();
@@ -43,16 +43,16 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         {
             foreach (var serializer in _serializationScheme.GetSerializers(context.Version))
             {
-                context.ObjectContext.Property = serializer.Property;
+                context.MetaData.Property = serializer.Property;
                 var value = serializer.Deserialize(reader, context);
-                context.ObjectContext.SetValue(value);
+                context.MetaData.SetValue(value);
             }
         }
 
 
         public override void Serialize(BinaryWriter writer, object value, BinaryContext context)
         {
-            var obj = Property.GetValue(context.ObjectContext.Object);
+            var obj = Property.GetValue(context.MetaData.Object);
 
             ClassSerializer.Serialize(writer, obj, context, SerializeClassObject);
         }
@@ -61,8 +61,8 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         {
             foreach (var serializer in _serializationScheme.GetSerializers(context.Version))
             {
-                context.ObjectContext.Property = serializer.Property;
-                var value = context.ObjectContext.GetValue();
+                context.MetaData.Property = serializer.Property;
+                var value = context.MetaData.GetValue();
                 serializer.Serialize(writer, value, context);
             }
         }

@@ -13,7 +13,7 @@ namespace DotNetSerializer.Binary.Processes.Common.Base
         {
             var obj = Activator.CreateInstance(type);
 
-            using (context.NewObjectContextScope(obj))
+            using (context.CreateMetaDataScope(obj))
                 deserializeClassObject(reader, context);
 
             return obj;
@@ -28,7 +28,7 @@ namespace DotNetSerializer.Binary.Processes.Common.Base
 
             if (!converter.IsComplete)
             {
-                using (context.NewObjectContextScope(obj))
+                using (context.CreateMetaDataScope(obj))
                     deserializeClassObject(reader, context);
             }
 
@@ -40,7 +40,7 @@ namespace DotNetSerializer.Binary.Processes.Common.Base
             BinaryContext context,
             Action<BinaryWriter, BinaryContext> serializeClassObject)
         {
-            using (context.NewObjectContextScope(obj))
+            using (context.CreateMetaDataScope(obj))
                 serializeClassObject(writer, context);
         }
 
@@ -55,7 +55,7 @@ namespace DotNetSerializer.Binary.Processes.Common.Base
 
             if (!converter.IsComplete)
             {
-                using (context.NewObjectContextScope(obj))
+                using (context.CreateMetaDataScope(obj))
                     serializeClassObject(writer, context);
             }
         }

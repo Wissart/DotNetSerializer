@@ -33,7 +33,7 @@ namespace DotNetSerializer.Binary.Converters.Default
         /// <returns>The read string value.</returns>
         public override string ReadValue(BinaryReader reader, BinaryContext context)
         {
-            var attribute = context.ObjectContext != null ? AttributeUtilities.GetStringFormatAttribute(context.ObjectContext.Property) : null;
+            var attribute = context.MetaData != null ? AttributeUtilities.GetStringFormatAttribute(context.MetaData.Property) : null;
 
             // if property not marked StringFormatAttribute use default attribute
             if (attribute == null)
@@ -110,7 +110,7 @@ namespace DotNetSerializer.Binary.Converters.Default
         /// <param name="context">The serialization context containing type and processing information.</param>
         public override void WriteValue(BinaryWriter writer, string value, BinaryContext context)
         {
-            var attribute = context.ObjectContext != null ? AttributeUtilities.GetStringFormatAttribute(context.ObjectContext.Property) : null;
+            var attribute = context.MetaData != null ? AttributeUtilities.GetStringFormatAttribute(context.MetaData.Property) : null;
 
             // if property not marked StringFormatAttribute use default attribute
             if (attribute == null)
@@ -203,7 +203,7 @@ namespace DotNetSerializer.Binary.Converters.Default
         public override bool TryGetSize(BinaryContext context, out int size)
         {
             size = -1;
-            var attribute = AttributeUtilities.GetStringFormatAttribute(context.ObjectContext.Property) ?? _defaultAttribute.Get<StringFormatAttribute>();
+            var attribute = AttributeUtilities.GetStringFormatAttribute(context.MetaData.Property) ?? _defaultAttribute.Get<StringFormatAttribute>();
 
             if (attribute.SizeType != StringSizeType.Fixed)
                 return false;

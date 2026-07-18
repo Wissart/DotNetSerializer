@@ -9,8 +9,8 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         {
         }
 
-        public virtual BinaryContext PrepareContext(BinaryContext context) => context;
-        public virtual void FreeObjectContext(BinaryContext context) { }
+        public virtual BinaryContext ElementContext(BinaryContext context) => context;
+        public virtual void RemoveLastObjectContext(BinaryContext context) { }
 
         public abstract object DeserializeElement(BinaryReader reader, BinaryContext context);
         public abstract void SerializeElement(BinaryWriter writer, object element, BinaryContext context);

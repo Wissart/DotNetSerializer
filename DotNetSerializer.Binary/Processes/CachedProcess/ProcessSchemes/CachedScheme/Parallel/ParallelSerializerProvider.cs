@@ -51,7 +51,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
         private CollectionSerializer CreateCollectionSerializerByProperty(Type[] elementTypes, BinaryContext context)
         {
-            var property = context.ObjectContext.Property;
+            var property = context.MetaData.Property;
             var declareCollectionType = property.PropertyType;
 
             var attribute = AttributeUtilities.GetCollectionAttribute(property);

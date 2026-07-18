@@ -26,35 +26,35 @@ namespace DotNetSerializer.Binary
 
         internal BinaryContext(BinaryContext prev, object obj) : this(prev)
         {
-            CreateObjectContext(obj);
+            CreateMetaData(obj);
         }
 
 
-        internal IDisposable NewObjectContextScope(object obj)
+        internal IDisposable CreateMetaDataScope(object obj)
         {
-            CreateObjectContext(obj);
+            CreateMetaData(obj);
             return DisposableScope.Create(() =>
             {
-                RemoveObjectContext();
+                RemoveMetaData();
             });
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="SerialiationObjectContext"/> class.
+        /// Creates a new instance of the <see cref="SerialiationMetaData"/> class.
         /// </summary>
-        /// <param name="obj">The object for which the context is created.</param>
-        internal void CreateObjectContext(object obj)
+        /// <param name="obj">The object for which the meta data is created.</param>
+        internal void CreateMetaData(object obj)
         {
-            ObjectContext = new SerialiationObjectContext(ObjectContext)
+            MetaData = new SerialiationMetaData(MetaData)
             {
                 Object = obj,
             };
         }
 
-        /// <summary>Removes the last context in the  object context chain. </summary>
-        internal void RemoveObjectContext()
+        /// <summary>Removes the last meta data in the object context chain.</summary>
+        internal void RemoveMetaData()
         {
-            ObjectContext = ObjectContext.Prev;
+            MetaData = MetaData.Prev;
         }
 
         internal BinaryContext Clone()
@@ -62,7 +62,7 @@ namespace DotNetSerializer.Binary
             return new BinaryContext(this.Prev, ProcessID)
             {
                 Version = this.Version,
-                ObjectContext = this.ObjectContext,
+                MetaData = this.MetaData,
                 _transientValues = this._transientValues
             };
         }

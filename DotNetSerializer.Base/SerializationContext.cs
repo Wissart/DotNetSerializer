@@ -5,12 +5,12 @@ using System.Reflection;
 namespace DotNetSerializer.Base
 {
     /// <summary>
-    /// Represents serialization context data for processing the object and it's property.
+    /// Represents the object meta data for serialization.
     /// </summary>
-    public class SerialiationObjectContext
+    public class SerialiationMetaData
     {
-        /// <summary>Gets the prvious data in the chain.</summary>
-        public SerialiationObjectContext Prev { get; }
+        /// <summary>Gets the previous data in the chain.</summary>
+        public SerialiationMetaData Prev { get; }
         /// <summary>Gets or sets the processing object.</summary>
         public object Object { get; set; }
         /// <summary>Gets or sets the processing property.</summary>
@@ -20,7 +20,7 @@ namespace DotNetSerializer.Base
         /// Initializes a new instance with specified previous data.
         /// </summary>
         /// <param name="prev">Previous data in the chain.</param>
-        public SerialiationObjectContext(SerialiationObjectContext prev)
+        public SerialiationMetaData(SerialiationMetaData prev)
         {
             Prev = prev;
         }
@@ -56,23 +56,23 @@ namespace DotNetSerializer.Base
         public uint Version { get; set; }
         /// <summary>Gets read-only access to transient values.</summary>
         public IReadOnlyDictionary<string, object> TransientValues => _transientValues;
-        /// <summary>Gets or sets the current object context.</summary>
-        public SerialiationObjectContext ObjectContext { get; set; }
+        /// <summary>Gets or sets the current object meta data.</summary>
+        public SerialiationMetaData MetaData { get; set; }
 
         /// <summary>
         /// Initializes a new instance, optionally copying from previous context.
         /// </summary>
-        /// <param name="prevMetaData">Previous context to copy from, or null.</param>
-        public SerializationContext(SerializationContext prevMetaData)
+        /// <param name="prev">Previous context to copy from, or null.</param>
+        public SerializationContext(SerializationContext prev)
         {
-            if (prevMetaData != null)
+            if (prev != null)
             {
-                ObjectContext = prevMetaData.ObjectContext;
-                _transientValues = prevMetaData._transientValues;
+                MetaData = prev.MetaData;
+                _transientValues = prev._transientValues;
             }
             else
             {
-                ObjectContext = null;
+                MetaData = null;
                 _transientValues = new Dictionary<string, object>();
             }
         }

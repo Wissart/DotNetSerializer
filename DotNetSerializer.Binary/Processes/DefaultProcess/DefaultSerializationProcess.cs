@@ -22,7 +22,7 @@ namespace DotNetSerializer.Binary.Processes.DefaultProcess
 
         protected override void SerializePropertyCollection(BinaryWriter writer, object collection, Type[] elementTypes, BinaryContext context)
         {
-            var attribute = AttributeUtilities.GetCollectionAttribute(context.ObjectContext.Property);
+            var attribute = AttributeUtilities.GetCollectionAttribute(context.MetaData.Property);
 
             if (attribute == null)
                 attribute = Options.DefaultAttributes.Get<CollectionAttribute>();

@@ -71,7 +71,7 @@ namespace DotNetSerializer.Binary.Processes
 
         protected void SerializeVersionableObject(BinaryWriter writer, BinaryContext context)
         {
-            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.MetaData.Object.GetType());
 
             SerializeVersion(writer, context);
 
@@ -81,20 +81,20 @@ namespace DotNetSerializer.Binary.Processes
 
         private void SerializeVersion(BinaryWriter writer, BinaryContext context)
         {
-            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.MetaData.Object.GetType());
             var properties = typeInfo.Properties;
 
             var versionPropPos = typeInfo.GetVersionPropertyID();
 
             SerializeProperties(writer, properties, versionPropPos, context);
 
-            var version = typeInfo.GetVersionProperty().GetValue(context.ObjectContext.Object);
+            var version = typeInfo.GetVersionProperty().GetValue(context.MetaData.Object);
             context.Version = (uint)version;
         }
 
         protected void SerializeClassObject(BinaryWriter writer, BinaryContext context)
         {
-            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.MetaData.Object.GetType());
 
             var properties = typeInfo.GetPropertiesByVersion(context.Version);
             SerializeProperties(writer, properties, properties.Length, context);
@@ -104,8 +104,8 @@ namespace DotNetSerializer.Binary.Processes
         {
             for (int i = 0; i < toPropPos; i++)
             {
-                context.ObjectContext.Property = properties[i];
-                var value = context.ObjectContext.GetValue();
+                context.MetaData.Property = properties[i];
+                var value = context.MetaData.GetValue();
                 SerializeProperty(writer, value, context);
             }
         }
@@ -127,7 +127,7 @@ namespace DotNetSerializer.Binary.Processes
         private void SerializePropertyValue(BinaryWriter writer, object value, BinaryContext context)
         {
             Type converterType = value.GetType();
-            var converterAttribute = AttributeUtilities.GetConverterAttribute(context.ObjectContext.Property);
+            var converterAttribute = AttributeUtilities.GetConverterAttribute(context.MetaData.Property);
             if (converterAttribute != null)
             {
                 converterType = converterAttribute.ConverterType;

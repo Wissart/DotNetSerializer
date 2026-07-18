@@ -30,7 +30,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
                 ParallelProcessPool.AddTask(context.ProcessID, () =>
                 {
-                    using (cloneData.NewObjectContextScope(obj))
+                    using (cloneData.CreateMetaDataScope(obj))
                         DeserializeClassObject(partReader, cloneData);
 
                     partReader.Close();

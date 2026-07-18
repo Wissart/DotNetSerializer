@@ -39,7 +39,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var stream = new MemoryStream(data);
             var reader = new BinaryReader(stream);
             var serializationData = new BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.FixedString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.FixedString));
 
             var result = (string)converter.Read(reader, serializationData);
             reader.Close();
@@ -57,7 +57,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var stream = new MemoryStream();
             var writer = new BinaryWriter(stream);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.FixedString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.FixedString));
 
             converter.WriteValue(writer, value, serializationData);
             var data = stream.ToArray();
@@ -76,7 +76,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var stream = new MemoryStream(data);
             var reader = new BinaryReader(stream);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.PrefixString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.PrefixString));
 
             var result = (string)converter.Read(reader, serializationData);
             reader.Close();
@@ -94,7 +94,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var stream = new MemoryStream();
             var writer = new BinaryWriter(stream);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.PrefixString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.PrefixString));
 
             converter.WriteValue(writer, value, serializationData);
             var data = stream.ToArray();
@@ -113,7 +113,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var stream = new MemoryStream(data);
             var reader = new BinaryReader(stream);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.SignString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.SignString));
 
             var result = (string)converter.Read(reader, serializationData);
             reader.Close();
@@ -131,7 +131,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var stream = new MemoryStream();
             var writer = new BinaryWriter(stream);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.SignString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.SignString));
 
             converter.WriteValue(writer, value, serializationData);
             var data = stream.ToArray();
@@ -150,7 +150,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var stream = new MemoryStream(data);
             var reader = new BinaryReader(stream);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.PrefixString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.PrefixString));
 
             var result = (string)converter.Read(reader, serializationData);
             reader.Close();
@@ -168,7 +168,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var stream = new MemoryStream();
             var writer = new BinaryWriter(stream);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.PrefixString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.PrefixString));
 
             converter.WriteValue(writer, value, serializationData);
             var data = stream.ToArray();
@@ -184,7 +184,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var defaultAttributes = new DefaultAttributeStorage();
             var converter = new StringConverter(defaultAttributes);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.FixedString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.FixedString));
 
             var result = converter.TryGetSize(serializationData, out int size);
 
@@ -198,7 +198,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var defaultAttributes = new DefaultAttributeStorage();
             var converter = new StringConverter(defaultAttributes);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.PrefixString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.PrefixString));
 
             var result = converter.TryGetSize(serializationData, out int size);
 
@@ -212,7 +212,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var defaultAttributes = new DefaultAttributeStorage();
             var converter = new StringConverter(defaultAttributes);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.SignString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.SignString));
 
             var result = converter.TryGetSize(serializationData, out int size);
 
@@ -226,7 +226,7 @@ namespace DotNetSerializer.Binary.Tests.Unit.Converters.Default
             var defaultAttributes = new DefaultAttributeStorage();
             var converter = new StringConverter(defaultAttributes);
             var serializationData = new Binary.BinaryContext(null, null);
-            serializationData.ObjectContext.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.DefaultString));
+            serializationData.MetaData.Property = typeof(TestStringsClass).GetProperty(nameof(TestStringsClass.DefaultString));
 
             var result = converter.TryGetSize(serializationData, out int size);
 

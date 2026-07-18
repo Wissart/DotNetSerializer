@@ -12,10 +12,10 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         {
         }
 
-        public override BinaryContext PrepareContext(BinaryContext context)
+        public override BinaryContext ElementContext(BinaryContext context)
         {
             var newMetaData = new BinaryContext(context);
-            newMetaData.CreateObjectContext(null);
+            newMetaData.CreateMetaData(null);
             return newMetaData;
         }
 
@@ -35,7 +35,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
         protected void DeserializeElement(BinaryReader reader, object obj, BinaryContext context)
         {
-            context.ObjectContext.Object = obj;
+            context.MetaData.Object = obj;
             DeserializeVersionableObject(reader, context);
         }
 
@@ -43,23 +43,23 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         {
             foreach (var serializer in _serializationScheme.GetVersionSerializers())
             {
-                context.ObjectContext.Property = serializer.Property;
+                context.MetaData.Property = serializer.Property;
                 var value = serializer.Deserialize(reader, context);
                 //serializer.Property.SetValue(context.ObjectData.Object, value);
-                context.ObjectContext.SetValue(value);
+                context.MetaData.SetValue(value);
             }
 
             var versionProperty = _serializationScheme.TypeInfo.GetVersionProperty();
-            var version = (uint)versionProperty.GetValue(context.ObjectContext.Object);
+            var version = (uint)versionProperty.GetValue(context.MetaData.Object);
 
             context.Version = version;
 
             foreach (var serializer in _serializationScheme.GetSerializers(version))
             {
-                context.ObjectContext.Property = serializer.Property;
+                context.MetaData.Property = serializer.Property;
                 var value = serializer.Deserialize(reader, context);
                 //serializer.Property.SetValue(context.ObjectData.Object, value);
-                context.ObjectContext.SetValue(value);
+                context.MetaData.SetValue(value);
             }
         }
 
@@ -70,28 +70,28 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
         public override void SerializeElement(BinaryWriter writer, object element, BinaryContext context)
         {
-            context.ObjectContext.Object = element;
+            context.MetaData.Object = element;
             SerializeVersionableObject(writer, context);
         }
 
         protected void SerializeVersionableObject(BinaryWriter writer, BinaryContext context)
         {
             var versionProperty = _serializationScheme.TypeInfo.GetVersionProperty();
-            var version = (uint)versionProperty.GetValue(context.ObjectContext.Object);
+            var version = (uint)versionProperty.GetValue(context.MetaData.Object);
 
             context.Version = version;
 
             foreach (var serializer in _serializationScheme.GetVersionSerializers())
             {
-                context.ObjectContext.Property = serializer.Property;
-                var value = context.ObjectContext.GetValue();
+                context.MetaData.Property = serializer.Property;
+                var value = context.MetaData.GetValue();
                 serializer.Serialize(writer, value, context);
             }
 
             foreach (var serializer in _serializationScheme.GetSerializers(version))
             {
-                context.ObjectContext.Property = serializer.Property;
-                var value = context.ObjectContext.GetValue();
+                context.MetaData.Property = serializer.Property;
+                var value = context.MetaData.GetValue();
                 serializer.Serialize(writer, value, context);
             }
         }

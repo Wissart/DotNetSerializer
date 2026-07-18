@@ -27,7 +27,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
             if (!_converter.IsComplete)
             {
-                context.ObjectContext.Object = obj;
+                context.MetaData.Object = obj;
                 DeserializeClassObject(reader, context);
             }
 
@@ -46,7 +46,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
             if (!_converter.IsComplete)
             {
-                context.ObjectContext.Object = element;
+                context.MetaData.Object = element;
                 SerializeClassObject(writer, context);
             }
         }

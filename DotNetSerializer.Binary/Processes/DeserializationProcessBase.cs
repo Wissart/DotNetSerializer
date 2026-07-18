@@ -79,7 +79,7 @@ namespace DotNetSerializer.Binary.Processes
 
         protected void DeserializeVersionableObject(BinaryReader reader, BinaryContext context)
         {
-            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.MetaData.Object.GetType());
 
             DeserializeVersion(reader, context);
 
@@ -89,20 +89,20 @@ namespace DotNetSerializer.Binary.Processes
 
         private void DeserializeVersion(BinaryReader reader, BinaryContext context)
         {
-            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.MetaData.Object.GetType());
             var properties = typeInfo.Properties;
 
             var versionPropPos = typeInfo.GetVersionPropertyID();
 
             DeserializeProperties(reader, properties, versionPropPos, context);
 
-            var version = typeInfo.GetVersionProperty().GetValue(context.ObjectContext.Object);
+            var version = typeInfo.GetVersionProperty().GetValue(context.MetaData.Object);
             context.Version = (uint)version;
         }
 
         protected void DeserializeClassObject(BinaryReader reader, BinaryContext context)
         {
-            var typeInfo = TypeInfoStorage.Get(context.ObjectContext.Object.GetType());
+            var typeInfo = TypeInfoStorage.Get(context.MetaData.Object.GetType());
 
             var properties = typeInfo.GetPropertiesByVersion(context.Version);
             DeserializeProperties(reader, properties, properties.Length, context);
@@ -112,9 +112,9 @@ namespace DotNetSerializer.Binary.Processes
         {
             for (int i = 0; i < toPropPos; i++)
             {
-                context.ObjectContext.Property = properties[i];
-                var value = DeserializeProperty(reader, context.ObjectContext.Property.PropertyType, context);
-                context.ObjectContext.SetValue(value);
+                context.MetaData.Property = properties[i];
+                var value = DeserializeProperty(reader, context.MetaData.Property.PropertyType, context);
+                context.MetaData.SetValue(value);
             }
         }
 
@@ -135,7 +135,7 @@ namespace DotNetSerializer.Binary.Processes
         private object DeserializePropertyValue(BinaryReader reader, Type valueType, BinaryContext context)
         {
             Type converterType = valueType;
-            var converterAttribute = AttributeUtilities.GetConverterAttribute(context.ObjectContext.Property);
+            var converterAttribute = AttributeUtilities.GetConverterAttribute(context.MetaData.Property);
             if (converterAttribute != null)
             {
                 converterType = converterAttribute.ConverterType;

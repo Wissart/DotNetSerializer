@@ -30,19 +30,19 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             _sizeByVersion = new Dictionary<uint, int>();
         }
 
-        public object Deserialize(BinaryReader reader, BinaryContext data)
+        public object Deserialize(BinaryReader reader, BinaryContext context)
         {
             if (TypeInfo.IsVersionable)
-                return new CachedVersionableSerializer(null, this).Deserialize(reader, data);
+                return new CachedVersionableSerializer(null, this).Deserialize(reader, context);
             else
-                return new CachedClassSerializer(null, this).Deserialize(reader, data);
+                return new CachedClassSerializer(null, this).Deserialize(reader, context);
         }
 
-        public PropertySerializer GetCollectionSerializer(Type[] elementTypes, BinaryContext metaData)
+        public PropertySerializer GetCollectionSerializer(Type[] elementTypes, BinaryContext context)
         {
-            var propertyName = metaData.ObjectContext.Property.Name;
+            var propertyName = context.MetaData.Property.Name;
             if (!_serializers.ContainsKey(propertyName))
-                _serializers[propertyName] = _schemeMaker.GetCollectionSerializerByProperty(elementTypes, metaData);
+                _serializers[propertyName] = _schemeMaker.GetCollectionSerializerByProperty(elementTypes, context);
 
             return _serializers[propertyName];
         }
@@ -82,18 +82,18 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             return _serializersByVersion[version];
         }
 
-        public bool TryGetSize(BinaryContext metaData, out int size)
+        public bool TryGetSize(BinaryContext context, out int size)
         {
-            if (!_sizeByVersion.TryGetValue(metaData.Version, out size))
+            if (!_sizeByVersion.TryGetValue(context.Version, out size))
             {
                 size = 0;
-                using (metaData.NewObjectContextScope(null))
+                using (context.CreateMetaDataScope(null))
                 {
-                    var objectData = metaData.ObjectContext;
-                    foreach (var serializer in GetSerializers(metaData.Version))
+                    var metaData = context.MetaData;
+                    foreach (var serializer in GetSerializers(context.Version))
                     {
-                        objectData.Property = serializer.Property;
-                        if (!serializer.TryGetSize(metaData, out int serializerSize))
+                        metaData.Property = serializer.Property;
+                        if (!serializer.TryGetSize(context, out int serializerSize))
                         {
                             size = -1;
                             break;
@@ -103,7 +103,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
                     }
                 }
 
-                _sizeByVersion[metaData.Version] = size;
+                _sizeByVersion[context.Version] = size;
             }
 
             return size > 0;

@@ -43,7 +43,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess
 
         protected override object DeserializePropertyCollection(BinaryReader reader, Type propertyType, Type[] elementTypes, BinaryContext context)
         {
-            var scheme = SerializerProvider.Schemes.Get(context.ObjectContext.Object.GetType());
+            var scheme = SerializerProvider.Schemes.Get(context.MetaData.Object.GetType());
             var serializer = scheme.GetCollectionSerializer(elementTypes, context);
             var collection = serializer.Deserialize(reader, context);
 

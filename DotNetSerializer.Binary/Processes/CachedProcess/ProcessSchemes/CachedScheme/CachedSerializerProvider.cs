@@ -69,7 +69,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
         public CollectionSerializer GetCollectionSerializerByProperty(Type[] elementTypes, BinaryContext context)
         {
-            var property = context.ObjectContext.Property;
+            var property = context.MetaData.Property;
             var declareCollectionType = property.PropertyType;
 
             return CreateCollectionSerializerByProperty(property, declareCollectionType, elementTypes);

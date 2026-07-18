@@ -24,7 +24,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess
 
         protected override void SerializePropertyCollection(BinaryWriter writer, object collection, Type[] elementTypes, BinaryContext context)
         {
-            var scheme = SerializerProvider.Schemes.Get(context.ObjectContext.Object.GetType());
+            var scheme = SerializerProvider.Schemes.Get(context.MetaData.Object.GetType());
             var serializer = scheme.GetCollectionSerializer(elementTypes, context);
             serializer.Serialize(writer, collection, context);
         }

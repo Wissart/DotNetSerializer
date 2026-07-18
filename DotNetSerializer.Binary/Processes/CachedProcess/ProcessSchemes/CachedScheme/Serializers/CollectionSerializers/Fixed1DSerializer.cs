@@ -18,7 +18,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
         {
             var items = Deserialize1D(reader, _shape, context);
 
-            var collection = _collectionHandler.CreateCollectionWithItems(_elementTypes, items);
+            var collection = _collectionHandler.CreateCollectionWithItems(_elementTypes, items, _shape);
 
             return collection;
         }

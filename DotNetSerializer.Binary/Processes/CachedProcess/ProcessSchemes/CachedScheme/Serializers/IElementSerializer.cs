@@ -4,8 +4,8 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 {
     internal interface IElementSerializer
     {
-        BinaryContext PrepareContext(BinaryContext context);
-        void FreeObjectContext(BinaryContext context);
+        BinaryContext ElementContext(BinaryContext context);
+        void RemoveLastObjectContext(BinaryContext context);
 
         object DeserializeElement(BinaryReader reader, BinaryContext context);
         void SerializeElement(BinaryWriter writer, object element, BinaryContext context);

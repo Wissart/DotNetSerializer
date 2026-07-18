@@ -23,7 +23,7 @@ namespace DotNetSerializer.Base.Tests.Unit
             var context = new TestSerializationContext(null);
 
             Assert.AreEqual<uint>(0, context.Version);
-            Assert.IsNull(context.ObjectContext);
+            Assert.IsNull(context.MetaData);
             Assert.IsNotNull(context.TransientValues);
         }
 
@@ -35,7 +35,7 @@ namespace DotNetSerializer.Base.Tests.Unit
             var context = new TestSerializationContext(null)
             {
                 Version = 12,
-                ObjectContext = new SerialiationObjectContext(null)
+                MetaData = new SerialiationMetaData(null)
                 {
                     Object = obj,
                     Property = property,
@@ -44,9 +44,9 @@ namespace DotNetSerializer.Base.Tests.Unit
             var result = new TestSerializationContext(context);
 
             Assert.AreEqual<uint>(0, result.Version);
-            Assert.IsNotNull(result.ObjectContext);
+            Assert.IsNotNull(result.MetaData);
             Assert.AreSame(context, result.Prev);
-            Assert.AreSame(context.ObjectContext, result.ObjectContext);
+            Assert.AreSame(context.MetaData, result.MetaData);
             Assert.AreSame(context.TransientValues, result.TransientValues);
         }
 
@@ -99,7 +99,7 @@ namespace DotNetSerializer.Base.Tests.Unit
             var context = new TestSerializationContext(null)
             {
                 Version = 12,
-                ObjectContext = new SerialiationObjectContext(null)
+                MetaData = new SerialiationMetaData(null)
                 {
                     Object = new TestObject(),
                     Property = typeof(TestObject).GetProperty(nameof(TestObject.TestProperty)),
