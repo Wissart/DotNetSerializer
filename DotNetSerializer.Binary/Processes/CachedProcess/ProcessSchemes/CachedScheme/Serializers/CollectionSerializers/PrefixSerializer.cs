@@ -6,18 +6,21 @@ using System.Reflection;
 
 namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Serializers.CollectionSerializers
 {
-    internal abstract class PrefixSerializer : CollectionSerializer, IElementSerializer
+    internal class PrefixSerializer : CollectionSerializer, IElementSerializer
     {
-        protected PrefixSerializer(PropertyInfo property, ICollectionHandler collectionHandler, Type[] elementTypes, IElementSerializer elementSerializer) 
-            : base(property, collectionHandler, elementTypes, elementSerializer)
+        public PrefixSerializer(PropertyInfo property, 
+            ICollectionHandler collectionHandler, 
+            int rank, Type[] elementTypes, 
+            IElementSerializer elementSerializer) 
+            : base(property, collectionHandler, rank, elementTypes, elementSerializer)
         {
         }
 
-        protected int[] ReadShape(BinaryReader reader)
+        protected override int[] GetShape(BinaryReader reader)
         {
-            var _shape = new int[Rank];
+            var _shape = new int[_rank];
 
-            for (int i = 0; i < Rank; i++)
+            for (int i = 0; i < _rank; i++)
             {
                 _shape[i] = reader.ReadInt32();
             }
@@ -37,24 +40,28 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
         public override void Serialize(BinaryWriter writer, object value, BinaryContext context)
         {
-            var collection = value;
+            WriteShape(writer, value);
 
-            WriteShape(writer, collection);
-
-            SerializeCollection(writer, collection, context);
+            SerializeCollection(writer, value, context);
         }
 
-        public virtual BinaryContext ElementContext(BinaryContext context) => context;
-        public virtual void RemoveLastObjectContext(BinaryContext context) { }
+        public BinaryContext ElementContext(BinaryContext context) => context;
+        public void RemoveLastObjectContext(BinaryContext context) { }
 
-        public abstract object DeserializeElement(BinaryReader reader, BinaryContext context);
+        public object DeserializeElement(BinaryReader reader, BinaryContext context)
+        {
+            var shape = GetShape(reader);
+
+            var elements = _deserializeCollection(reader, shape, _elementSerializer.DeserializeElement, context);
+            var collection = _collectionHandler.CreateCollectionWithItems(_elementTypes, elements, shape);
+            return collection;
+        }
+
         public void SerializeElement(BinaryWriter writer, object element, BinaryContext context)
         {
-            var collection = element;
+            WriteShape(writer, element);
 
-            WriteShape(writer, collection);
-
-            foreach (var item in (ICollection)collection)
+            foreach (var item in (ICollection)element)
             {
                 _elementSerializer.SerializeElement(writer, item, context);
             }

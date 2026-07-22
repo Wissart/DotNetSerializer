@@ -6,24 +6,23 @@ using System.Reflection;
 
 namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedScheme.Parallel.Serializers.CollectionSerializers
 {
-    internal abstract class PrefixParallelSerializer : CollectionSerializer
+    internal class PrefixParallelSerializer : ParallelCollectionSerializer
     {
-        protected readonly int _elementSize;
-        protected PrefixParallelSerializer(PropertyInfo property, 
+        public PrefixParallelSerializer(PropertyInfo property, 
             ICollectionHandler collectionHandler, 
+            int rank,
             Type[] elementTypes, 
             IElementSerializer elementSerializer,
             int elementSize) 
-            : base(property, collectionHandler, elementTypes, elementSerializer)
+            : base(property, collectionHandler, rank, elementTypes, elementSerializer, elementSize)
         {
-            _elementSize = elementSize;
         }
 
-        protected int[] ReadShape(BinaryReader reader)
+        protected override int[] GetShape(BinaryReader reader)
         {
-            var _shape = new int[Rank];
+            var _shape = new int[_rank];
 
-            for (int i = 0; i < Rank; i++)
+            for (int i = 0; i < _rank; i++)
             {
                 _shape[i] = reader.ReadInt32();
             }
@@ -43,11 +42,9 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
 
         public override void Serialize(BinaryWriter writer, object value, BinaryContext context)
         {
-            var collection = value;
+            WriteShape(writer, value);
 
-            WriteShape(writer, collection);
-
-            SerializeCollection(writer, collection, context);
+            SerializeCollection(writer, value, context);
         }
 
         public override bool TryGetSize(BinaryContext context, out int size)

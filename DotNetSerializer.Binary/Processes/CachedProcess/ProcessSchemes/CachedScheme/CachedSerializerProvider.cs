@@ -38,7 +38,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             var elementType = handler.GetElementType(elementTypes);
             var elementSerializer = CreateElementSerializer(elementType);
 
-            return CreatePrefixSerializer(null, handler, rank, elementTypes, elementSerializer);
+            return new PrefixSerializer(null, handler, rank, elementTypes, elementSerializer);
         }
 
         private IElementSerializer CreateElementSerializer(Type valueType)
@@ -93,10 +93,10 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             if (sizeType == CollectionSizeType.Fixed)
             {
                 var shape = attribute.Shape;
-                return CreateFixedSerializer(property, handler, rank, shape, elementTypes, elementSerializer);
+                return new FixedSerializer(property, handler, rank, elementTypes, elementSerializer, shape);
             }
             else
-                return CreatePrefixSerializer(property, handler, rank, elementTypes, elementSerializer);
+                return new PrefixSerializer(property, handler, rank, elementTypes, elementSerializer);
         }
 
         public IElementSerializer CreateElementSerializer(PropertyInfo property, Type valueType)
@@ -120,7 +120,7 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             var elementType = handler.GetElementType(elementTypes);
             var elementSerializer = CreateElementSerializer(property, elementType);
 
-            return CreatePrefixSerializer(property, handler, rank, elementTypes, elementSerializer);
+            return new PrefixSerializer(property, handler, rank, elementTypes, elementSerializer);
         }
 
         public TypeSerializer CreateTypeSerializer(PropertyInfo property, Type valueType)
@@ -135,45 +135,6 @@ namespace DotNetSerializer.Binary.Processes.CachedProcess.ProcessSchemes.CachedS
             }
 
             return CreateTypeSerializer(property, valueType, converterType);
-        }
-
-        public FixedSerializer CreateFixedSerializer(PropertyInfo property,
-            ICollectionHandler handler,
-            int rank,
-            int[] shape,
-            Type[] elementTypes,
-            IElementSerializer elementSerializer)
-        {
-            switch (rank)
-            {
-                case 1:
-                    return new Fixed1DSerializer(property, handler, elementTypes, elementSerializer, shape);
-                case 2:
-                    return new Fixed2DSerializer(property, handler, elementTypes, elementSerializer, shape);
-                case 3:
-                    return new Fixed3DSerializer(property, handler, elementTypes, elementSerializer, shape);
-                default:
-                    throw new DotNetSerializerException($"Unsupported collection rank: {shape.Length}");
-            }
-        }
-
-        public PrefixSerializer CreatePrefixSerializer(PropertyInfo property,
-            ICollectionHandler handler,
-            int rank,
-            Type[] elementTypes,
-            IElementSerializer elementSerializer)
-        {
-            switch (rank)
-            {
-                case 1:
-                    return new Prefix1DSerializer(property, handler, elementTypes, elementSerializer);
-                case 2:
-                    return new Prefix2DSerializer(property, handler, elementTypes, elementSerializer);
-                case 3:
-                    return new Prefix3DSerializer(property, handler, elementTypes, elementSerializer);
-                default:
-                    throw new DotNetSerializerException($"Unsupported collection rank: {rank}");
-            }
         }
 
         private TypeSerializer CreateTypeSerializer(PropertyInfo property, Type valueType, Type converterType)

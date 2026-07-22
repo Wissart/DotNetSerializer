@@ -62,8 +62,8 @@ namespace DotNetSerializer.Binary
             return new BinaryContext(this.Prev, ProcessID)
             {
                 Version = this.Version,
-                MetaData = this.MetaData,
-                _transientValues = this._transientValues
+                MetaData = this.MetaData.Clone(),
+                _transientValues = new System.Collections.Generic.Dictionary<string, object>(_transientValues),
             };
         }
     }

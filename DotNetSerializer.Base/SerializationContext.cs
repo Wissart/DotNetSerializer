@@ -10,11 +10,13 @@ namespace DotNetSerializer.Base
     public class SerialiationMetaData
     {
         /// <summary>Gets the previous data in the chain.</summary>
-        public SerialiationMetaData Prev { get; }
+        public SerialiationMetaData Prev { get; private set; }
         /// <summary>Gets or sets the processing object.</summary>
         public object Object { get; set; }
         /// <summary>Gets or sets the processing property.</summary>
         public PropertyInfo Property { get; set; }
+
+        private SerialiationMetaData() { }
 
         /// <summary>
         /// Initializes a new instance with specified previous data.
@@ -41,6 +43,20 @@ namespace DotNetSerializer.Base
         public void SetValue(object value)
         {
             Property.SetValue(Object, value);
+        }
+
+        /// <summary>
+        /// Creates a copy of this <see cref="SerialiationMetaData"/> object.
+        /// </summary>
+        /// <returns></returns>
+        public SerialiationMetaData Clone()
+        {
+            return new SerialiationMetaData()
+            {
+                Prev = this.Prev,
+                Object = this.Object,
+                Property = this.Property,
+            };
         }
     }
 

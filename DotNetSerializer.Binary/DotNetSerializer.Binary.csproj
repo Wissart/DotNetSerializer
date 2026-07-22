@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryConfiguration.cs" />
+    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\ParallelCollectionSerializer.cs" />
     <Compile Include="Storages\BinaryConverterStorage.cs" />
     <Compile Include="BinaryContext.cs" />
     <Compile Include="Processes\CachedProcess\CachedProcessProvider.cs" />
@@ -81,24 +82,12 @@
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\ParallelProcessScheme.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\ParallelSerializerProvider.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\ParallelSchemeStorage.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Fixed1DParallelSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Fixed2DParallelSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Fixed3DParallelSerializer.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\FixedParallelSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Prefix1DParallelSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Prefix2DParallelSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\Prefix3DParallelSerializer.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\CollectionSerializers\PrefixParallelSerializer.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\TypeSerializers\ClassParallelSerializer.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Parallel\Serializers\TypeSerializers\ClassParallelSerializerWithConverter.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Fixed1DSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Fixed2DSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Fixed3DSerializer.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\FixedSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Prefix1DSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Prefix2DSerializer.cs" />
-    <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\Prefix3DSerializer.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\CollectionSerializers\PrefixSerializer.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\ContainerSerializer.cs" />
     <Compile Include="Processes\CachedProcess\ProcessSchemes\CachedScheme\Serializers\IElementSerializer.cs" />
