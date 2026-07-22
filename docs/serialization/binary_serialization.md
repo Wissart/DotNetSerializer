@@ -145,11 +145,7 @@ Additionaly, provides following converters:
 
 ```
 
-{% note %}
-
 **Note:** `FactoryConverter` does not support writing by design. Overriding `CanWrite` is not possible because it is sealed.
-
-{% endnote %}
 
 #### InAttributeConverter
 
@@ -205,12 +201,7 @@ Additionaly, provides following converters:
 
 ```
 
-{% note %}
-
 **Note:** To control write support, either implement `WriteValue` normally, or override `CanWrite` to return `false` and override `WriteValue` to throw `NotImplementedException` to make the converter read-only.
-
-{% endnote %}
-
 
 #### LambdaConverter
 
@@ -286,11 +277,7 @@ Additionaly, provides following converters:
 
 ```
 
-{% note %}
-
 **Note:** Write support is controlled by whether you provide a `writeMethod` delegate. If `null`, the converter becomes read-only.
-
-{% endnote %}
 
 #### VersionableConverter
 
@@ -369,12 +356,7 @@ Additionaly, provides following converters:
 
 ```
 
-{% note %}
-
 **Note:** To make `VersionableConverter` read-only, override `CanWrite` to return `false` and override `WriteVersion` and `WriteObject` to throw `NotImplementedException`.
-
-{% endnote %}
-
 
 ## Binary Options
 

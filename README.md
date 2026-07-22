@@ -56,8 +56,8 @@ For more examples, refer to the official [documentation](#documentation).
 
 ## Documentation
 
-[Configuration](https://github.com/wissart/DotNetSerializer/blob/main/docs/serialiaztion/configuration.md)
-[Binary Serializer](https://github.com/wissart/DotNetSerializer/blob/main/docs/serialiaztion/binary_serializer.md)
+* [Configuration](https://github.com/Wissart/DotNetSerializer/blob/main/docs/serialization/configuration.md)
+* [Binary Serializer](https://github.com/Wissart/DotNetSerializer/blob/main/docs/serialization/binary_serialization.md)
 
 
 ## License
